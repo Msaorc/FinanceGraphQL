@@ -1,28 +1,79 @@
-# GraphQL schema example
-#
-# https://gqlgen.com/getting-started/
-
-type Todo {
+type Lancamento {
   id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
+  descricao: string!
+  tipo: TipoLacamento!
+  categoria: Categoria!
+  valor: Decimal!
+  formaPagamento: FormaPagamento!
+  observacao: string
+  necessidade: NivelNecessidade!
+  recorrencia: integer
 }
 
-type User {
+type Categoria{
   id: ID!
-  name: String!
+  descricao: string!
+  lancamento: [Lancamento]
+}
+
+type TipoLacamento {
+  id: ID!
+  descricao: string!
+  lancamento: [Lancamento]
+}
+
+type FormaPagamento {
+  id: ID!
+  descricao: string!
+  lancamento: [Lancamento]
+}
+
+type NivelNecessidade {
+  id: ID!
+  descricao: string!
+  cor: string!
+  lancamento: [Lancamento]
+}
+
+input NovoLancamento {
+  descricao: string!
+  valor: Decimal!
+  observacao: string
+  recorrencia: integer
+  tipoId: ID!
+  categoriaId: ID!
+  formaPagamentoId: ID!
+  necessidadeId: ID!
+}
+
+input NovaCategoria {
+  descricao: string!
+}
+
+input NovoTipoLancamento {
+  descricao: string!
+}
+
+input NovaFormaPagamento {
+  descricao: string!
+}
+
+input NovoNivelNecessidade {
+  descricao: string!
 }
 
 type Query {
-  todos: [Todo!]!
-}
-
-input NewTodo {
-  text: String!
-  userId: String!
+  lacamentos: [Lancamento]
+  categorias: [Categoria]
+  tiposLacamento: [TipoLacamento]
+  formasPagamento: [FormaPagamento]
+  niveisNecessidade: [NivelNecessidade]
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  criarLacamento(input: NovoLancamento!) Lancamento!
+  criarCategoria(input: NovaCategoria!) Categoria!
+  criarLacamento(input: NovoTipoLancamento!) TipoLacamento!
+  criarLacamento(input: NovaFormaPagamento!) FormaPagamento!
+  criarLacamento(input: NovoNivelNecessidade!) NivelNecessidade!  
 }
