@@ -11,14 +11,54 @@ import (
 	"github.com/msaorc/FinanceGraphQL/graph/model"
 )
 
-// CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+// CriarLacamento is the resolver for the criarLacamento field.
+func (r *mutationResolver) CriarLacamento(ctx context.Context, input model.NovoLancamento) (*model.Lancamento, error) {
+	panic(fmt.Errorf("not implemented: CriarLacamento - criarLacamento"))
 }
 
-// Todos is the resolver for the todos field.
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
+// CriarCategoria is the resolver for the criarCategoria field.
+func (r *mutationResolver) CriarCategoria(ctx context.Context, input model.NovaCategoria) (*model.Categoria, error) {
+	panic(fmt.Errorf("not implemented: CriarCategoria - criarCategoria"))
+}
+
+// CriarTipoLacamento is the resolver for the criarTipoLacamento field.
+func (r *mutationResolver) CriarTipoLacamento(ctx context.Context, input model.NovoTipoLancamento) (*model.TipoLacamento, error) {
+	panic(fmt.Errorf("not implemented: CriarTipoLacamento - criarTipoLacamento"))
+}
+
+// CriarFormaPagamento is the resolver for the criarFormaPagamento field.
+func (r *mutationResolver) CriarFormaPagamento(ctx context.Context, input model.NovaFormaPagamento) (*model.FormaPagamento, error) {
+	panic(fmt.Errorf("not implemented: CriarFormaPagamento - criarFormaPagamento"))
+}
+
+// CriarNivelNecessidade is the resolver for the criarNivelNecessidade field.
+func (r *mutationResolver) CriarNivelNecessidade(ctx context.Context, input model.NovoNivelNecessidade) (*model.NivelNecessidade, error) {
+	panic(fmt.Errorf("not implemented: CriarNivelNecessidade - criarNivelNecessidade"))
+}
+
+// Lacamentos is the resolver for the lacamentos field.
+func (r *queryResolver) Lacamentos(ctx context.Context) ([]*model.Lancamento, error) {
+	panic(fmt.Errorf("not implemented: Lacamentos - lacamentos"))
+}
+
+// Categorias is the resolver for the categorias field.
+func (r *queryResolver) Categorias(ctx context.Context) ([]*model.Categoria, error) {
+	panic(fmt.Errorf("not implemented: Categorias - categorias"))
+}
+
+// TiposLacamento is the resolver for the tiposLacamento field.
+func (r *queryResolver) TiposLacamento(ctx context.Context) ([]*model.TipoLacamento, error) {
+	panic(fmt.Errorf("not implemented: TiposLacamento - tiposLacamento"))
+}
+
+// FormasPagamento is the resolver for the formasPagamento field.
+func (r *queryResolver) FormasPagamento(ctx context.Context) ([]*model.FormaPagamento, error) {
+	panic(fmt.Errorf("not implemented: FormasPagamento - formasPagamento"))
+}
+
+// NiveisNecessidade is the resolver for the niveisNecessidade field.
+func (r *queryResolver) NiveisNecessidade(ctx context.Context) ([]*model.NivelNecessidade, error) {
+	panic(fmt.Errorf("not implemented: NiveisNecessidade - niveisNecessidade"))
 }
 
 // Mutation returns MutationResolver implementation.

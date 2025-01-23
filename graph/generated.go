@@ -47,32 +47,73 @@ type DirectiveRoot struct {
 }
 
 type ComplexityRoot struct {
+	Categoria struct {
+		Descricao  func(childComplexity int) int
+		ID         func(childComplexity int) int
+		Lancamento func(childComplexity int) int
+	}
+
+	FormaPagamento struct {
+		Descricao  func(childComplexity int) int
+		ID         func(childComplexity int) int
+		Lancamento func(childComplexity int) int
+	}
+
+	Lancamento struct {
+		Categoria      func(childComplexity int) int
+		Descricao      func(childComplexity int) int
+		FormaPagamento func(childComplexity int) int
+		ID             func(childComplexity int) int
+		Necessidade    func(childComplexity int) int
+		Observacao     func(childComplexity int) int
+		Recorrencia    func(childComplexity int) int
+		Tipo           func(childComplexity int) int
+		Valor          func(childComplexity int) int
+	}
+
 	Mutation struct {
-		CreateTodo func(childComplexity int, input model.NewTodo) int
+		CriarCategoria        func(childComplexity int, input model.NovaCategoria) int
+		CriarFormaPagamento   func(childComplexity int, input model.NovaFormaPagamento) int
+		CriarLacamento        func(childComplexity int, input model.NovoLancamento) int
+		CriarNivelNecessidade func(childComplexity int, input model.NovoNivelNecessidade) int
+		CriarTipoLacamento    func(childComplexity int, input model.NovoTipoLancamento) int
+	}
+
+	NivelNecessidade struct {
+		Cor        func(childComplexity int) int
+		Descricao  func(childComplexity int) int
+		ID         func(childComplexity int) int
+		Lancamento func(childComplexity int) int
 	}
 
 	Query struct {
-		Todos func(childComplexity int) int
+		Categorias        func(childComplexity int) int
+		FormasPagamento   func(childComplexity int) int
+		Lacamentos        func(childComplexity int) int
+		NiveisNecessidade func(childComplexity int) int
+		TiposLacamento    func(childComplexity int) int
 	}
 
-	Todo struct {
-		Done func(childComplexity int) int
-		ID   func(childComplexity int) int
-		Text func(childComplexity int) int
-		User func(childComplexity int) int
-	}
-
-	User struct {
-		ID   func(childComplexity int) int
-		Name func(childComplexity int) int
+	TipoLacamento struct {
+		Descricao  func(childComplexity int) int
+		ID         func(childComplexity int) int
+		Lancamento func(childComplexity int) int
 	}
 }
 
 type MutationResolver interface {
-	CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error)
+	CriarLacamento(ctx context.Context, input model.NovoLancamento) (*model.Lancamento, error)
+	CriarCategoria(ctx context.Context, input model.NovaCategoria) (*model.Categoria, error)
+	CriarTipoLacamento(ctx context.Context, input model.NovoTipoLancamento) (*model.TipoLacamento, error)
+	CriarFormaPagamento(ctx context.Context, input model.NovaFormaPagamento) (*model.FormaPagamento, error)
+	CriarNivelNecessidade(ctx context.Context, input model.NovoNivelNecessidade) (*model.NivelNecessidade, error)
 }
 type QueryResolver interface {
-	Todos(ctx context.Context) ([]*model.Todo, error)
+	Lacamentos(ctx context.Context) ([]*model.Lancamento, error)
+	Categorias(ctx context.Context) ([]*model.Categoria, error)
+	TiposLacamento(ctx context.Context) ([]*model.TipoLacamento, error)
+	FormasPagamento(ctx context.Context) ([]*model.FormaPagamento, error)
+	NiveisNecessidade(ctx context.Context) ([]*model.NivelNecessidade, error)
 }
 
 type executableSchema struct {
@@ -94,66 +135,254 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 	_ = ec
 	switch typeName + "." + field {
 
-	case "Mutation.createTodo":
-		if e.complexity.Mutation.CreateTodo == nil {
+	case "Categoria.descricao":
+		if e.complexity.Categoria.Descricao == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_createTodo_args(context.TODO(), rawArgs)
+		return e.complexity.Categoria.Descricao(childComplexity), true
+
+	case "Categoria.id":
+		if e.complexity.Categoria.ID == nil {
+			break
+		}
+
+		return e.complexity.Categoria.ID(childComplexity), true
+
+	case "Categoria.lancamento":
+		if e.complexity.Categoria.Lancamento == nil {
+			break
+		}
+
+		return e.complexity.Categoria.Lancamento(childComplexity), true
+
+	case "FormaPagamento.descricao":
+		if e.complexity.FormaPagamento.Descricao == nil {
+			break
+		}
+
+		return e.complexity.FormaPagamento.Descricao(childComplexity), true
+
+	case "FormaPagamento.id":
+		if e.complexity.FormaPagamento.ID == nil {
+			break
+		}
+
+		return e.complexity.FormaPagamento.ID(childComplexity), true
+
+	case "FormaPagamento.lancamento":
+		if e.complexity.FormaPagamento.Lancamento == nil {
+			break
+		}
+
+		return e.complexity.FormaPagamento.Lancamento(childComplexity), true
+
+	case "Lancamento.categoria":
+		if e.complexity.Lancamento.Categoria == nil {
+			break
+		}
+
+		return e.complexity.Lancamento.Categoria(childComplexity), true
+
+	case "Lancamento.descricao":
+		if e.complexity.Lancamento.Descricao == nil {
+			break
+		}
+
+		return e.complexity.Lancamento.Descricao(childComplexity), true
+
+	case "Lancamento.formaPagamento":
+		if e.complexity.Lancamento.FormaPagamento == nil {
+			break
+		}
+
+		return e.complexity.Lancamento.FormaPagamento(childComplexity), true
+
+	case "Lancamento.id":
+		if e.complexity.Lancamento.ID == nil {
+			break
+		}
+
+		return e.complexity.Lancamento.ID(childComplexity), true
+
+	case "Lancamento.necessidade":
+		if e.complexity.Lancamento.Necessidade == nil {
+			break
+		}
+
+		return e.complexity.Lancamento.Necessidade(childComplexity), true
+
+	case "Lancamento.observacao":
+		if e.complexity.Lancamento.Observacao == nil {
+			break
+		}
+
+		return e.complexity.Lancamento.Observacao(childComplexity), true
+
+	case "Lancamento.recorrencia":
+		if e.complexity.Lancamento.Recorrencia == nil {
+			break
+		}
+
+		return e.complexity.Lancamento.Recorrencia(childComplexity), true
+
+	case "Lancamento.tipo":
+		if e.complexity.Lancamento.Tipo == nil {
+			break
+		}
+
+		return e.complexity.Lancamento.Tipo(childComplexity), true
+
+	case "Lancamento.valor":
+		if e.complexity.Lancamento.Valor == nil {
+			break
+		}
+
+		return e.complexity.Lancamento.Valor(childComplexity), true
+
+	case "Mutation.criarCategoria":
+		if e.complexity.Mutation.CriarCategoria == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_criarCategoria_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateTodo(childComplexity, args["input"].(model.NewTodo)), true
+		return e.complexity.Mutation.CriarCategoria(childComplexity, args["input"].(model.NovaCategoria)), true
 
-	case "Query.todos":
-		if e.complexity.Query.Todos == nil {
+	case "Mutation.criarFormaPagamento":
+		if e.complexity.Mutation.CriarFormaPagamento == nil {
 			break
 		}
 
-		return e.complexity.Query.Todos(childComplexity), true
+		args, err := ec.field_Mutation_criarFormaPagamento_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
 
-	case "Todo.done":
-		if e.complexity.Todo.Done == nil {
+		return e.complexity.Mutation.CriarFormaPagamento(childComplexity, args["input"].(model.NovaFormaPagamento)), true
+
+	case "Mutation.criarLacamento":
+		if e.complexity.Mutation.CriarLacamento == nil {
 			break
 		}
 
-		return e.complexity.Todo.Done(childComplexity), true
+		args, err := ec.field_Mutation_criarLacamento_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
 
-	case "Todo.id":
-		if e.complexity.Todo.ID == nil {
+		return e.complexity.Mutation.CriarLacamento(childComplexity, args["input"].(model.NovoLancamento)), true
+
+	case "Mutation.criarNivelNecessidade":
+		if e.complexity.Mutation.CriarNivelNecessidade == nil {
 			break
 		}
 
-		return e.complexity.Todo.ID(childComplexity), true
+		args, err := ec.field_Mutation_criarNivelNecessidade_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
 
-	case "Todo.text":
-		if e.complexity.Todo.Text == nil {
+		return e.complexity.Mutation.CriarNivelNecessidade(childComplexity, args["input"].(model.NovoNivelNecessidade)), true
+
+	case "Mutation.criarTipoLacamento":
+		if e.complexity.Mutation.CriarTipoLacamento == nil {
 			break
 		}
 
-		return e.complexity.Todo.Text(childComplexity), true
+		args, err := ec.field_Mutation_criarTipoLacamento_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
 
-	case "Todo.user":
-		if e.complexity.Todo.User == nil {
+		return e.complexity.Mutation.CriarTipoLacamento(childComplexity, args["input"].(model.NovoTipoLancamento)), true
+
+	case "NivelNecessidade.cor":
+		if e.complexity.NivelNecessidade.Cor == nil {
 			break
 		}
 
-		return e.complexity.Todo.User(childComplexity), true
+		return e.complexity.NivelNecessidade.Cor(childComplexity), true
 
-	case "User.id":
-		if e.complexity.User.ID == nil {
+	case "NivelNecessidade.descricao":
+		if e.complexity.NivelNecessidade.Descricao == nil {
 			break
 		}
 
-		return e.complexity.User.ID(childComplexity), true
+		return e.complexity.NivelNecessidade.Descricao(childComplexity), true
 
-	case "User.name":
-		if e.complexity.User.Name == nil {
+	case "NivelNecessidade.id":
+		if e.complexity.NivelNecessidade.ID == nil {
 			break
 		}
 
-		return e.complexity.User.Name(childComplexity), true
+		return e.complexity.NivelNecessidade.ID(childComplexity), true
+
+	case "NivelNecessidade.lancamento":
+		if e.complexity.NivelNecessidade.Lancamento == nil {
+			break
+		}
+
+		return e.complexity.NivelNecessidade.Lancamento(childComplexity), true
+
+	case "Query.categorias":
+		if e.complexity.Query.Categorias == nil {
+			break
+		}
+
+		return e.complexity.Query.Categorias(childComplexity), true
+
+	case "Query.formasPagamento":
+		if e.complexity.Query.FormasPagamento == nil {
+			break
+		}
+
+		return e.complexity.Query.FormasPagamento(childComplexity), true
+
+	case "Query.lacamentos":
+		if e.complexity.Query.Lacamentos == nil {
+			break
+		}
+
+		return e.complexity.Query.Lacamentos(childComplexity), true
+
+	case "Query.niveisNecessidade":
+		if e.complexity.Query.NiveisNecessidade == nil {
+			break
+		}
+
+		return e.complexity.Query.NiveisNecessidade(childComplexity), true
+
+	case "Query.tiposLacamento":
+		if e.complexity.Query.TiposLacamento == nil {
+			break
+		}
+
+		return e.complexity.Query.TiposLacamento(childComplexity), true
+
+	case "TipoLacamento.descricao":
+		if e.complexity.TipoLacamento.Descricao == nil {
+			break
+		}
+
+		return e.complexity.TipoLacamento.Descricao(childComplexity), true
+
+	case "TipoLacamento.id":
+		if e.complexity.TipoLacamento.ID == nil {
+			break
+		}
+
+		return e.complexity.TipoLacamento.ID(childComplexity), true
+
+	case "TipoLacamento.lancamento":
+		if e.complexity.TipoLacamento.Lancamento == nil {
+			break
+		}
+
+		return e.complexity.TipoLacamento.Lancamento(childComplexity), true
 
 	}
 	return 0, false
@@ -163,7 +392,11 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	opCtx := graphql.GetOperationContext(ctx)
 	ec := executionContext{opCtx, e, 0, 0, make(chan graphql.DeferredResult)}
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
-		ec.unmarshalInputNewTodo,
+		ec.unmarshalInputNovaCategoria,
+		ec.unmarshalInputNovaFormaPagamento,
+		ec.unmarshalInputNovoLancamento,
+		ec.unmarshalInputNovoNivelNecessidade,
+		ec.unmarshalInputNovoTipoLancamento,
 	)
 	first := true
 
@@ -280,26 +513,118 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
 // region    ***************************** args.gotpl *****************************
 
-func (ec *executionContext) field_Mutation_createTodo_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+func (ec *executionContext) field_Mutation_criarCategoria_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
-	arg0, err := ec.field_Mutation_createTodo_argsInput(ctx, rawArgs)
+	arg0, err := ec.field_Mutation_criarCategoria_argsInput(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
 	args["input"] = arg0
 	return args, nil
 }
-func (ec *executionContext) field_Mutation_createTodo_argsInput(
+func (ec *executionContext) field_Mutation_criarCategoria_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
-) (model.NewTodo, error) {
+) (model.NovaCategoria, error) {
 	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 	if tmp, ok := rawArgs["input"]; ok {
-		return ec.unmarshalNNewTodo2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNewTodo(ctx, tmp)
+		return ec.unmarshalNNovaCategoria2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNovaCategoria(ctx, tmp)
 	}
 
-	var zeroVal model.NewTodo
+	var zeroVal model.NovaCategoria
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_criarFormaPagamento_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_criarFormaPagamento_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_criarFormaPagamento_argsInput(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (model.NovaFormaPagamento, error) {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNNovaFormaPagamento2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNovaFormaPagamento(ctx, tmp)
+	}
+
+	var zeroVal model.NovaFormaPagamento
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_criarLacamento_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_criarLacamento_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_criarLacamento_argsInput(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (model.NovoLancamento, error) {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNNovoLancamento2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNovoLancamento(ctx, tmp)
+	}
+
+	var zeroVal model.NovoLancamento
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_criarNivelNecessidade_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_criarNivelNecessidade_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_criarNivelNecessidade_argsInput(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (model.NovoNivelNecessidade, error) {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNNovoNivelNecessidade2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNovoNivelNecessidade(ctx, tmp)
+	}
+
+	var zeroVal model.NovoNivelNecessidade
+	return zeroVal, nil
+}
+
+func (ec *executionContext) field_Mutation_criarTipoLacamento_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+	var err error
+	args := map[string]any{}
+	arg0, err := ec.field_Mutation_criarTipoLacamento_argsInput(ctx, rawArgs)
+	if err != nil {
+		return nil, err
+	}
+	args["input"] = arg0
+	return args, nil
+}
+func (ec *executionContext) field_Mutation_criarTipoLacamento_argsInput(
+	ctx context.Context,
+	rawArgs map[string]any,
+) (model.NovoTipoLancamento, error) {
+	ctx = graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+	if tmp, ok := rawArgs["input"]; ok {
+		return ec.unmarshalNNovoTipoLancamento2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNovoTipoLancamento(ctx, tmp)
+	}
+
+	var zeroVal model.NovoTipoLancamento
 	return zeroVal, nil
 }
 
@@ -380,8 +705,8 @@ func (ec *executionContext) field___Type_fields_argsIncludeDeprecated(
 
 // region    **************************** field.gotpl *****************************
 
-func (ec *executionContext) _Mutation_createTodo(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_createTodo(ctx, field)
+func (ec *executionContext) _Categoria_id(ctx context.Context, field graphql.CollectedField, obj *model.Categoria) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Categoria_id(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -394,7 +719,7 @@ func (ec *executionContext) _Mutation_createTodo(ctx context.Context, field grap
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateTodo(rctx, fc.Args["input"].(model.NewTodo))
+		return obj.ID, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -406,12 +731,734 @@ func (ec *executionContext) _Mutation_createTodo(ctx context.Context, field grap
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.Todo)
+	res := resTmp.(string)
 	fc.Result = res
-	return ec.marshalNTodo2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTodo(ctx, field.Selections, res)
+	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Mutation_createTodo(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Categoria_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Categoria",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Categoria_descricao(ctx context.Context, field graphql.CollectedField, obj *model.Categoria) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Categoria_descricao(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Descricao, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Categoria_descricao(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Categoria",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Categoria_lancamento(ctx context.Context, field graphql.CollectedField, obj *model.Categoria) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Categoria_lancamento(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Lancamento, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Lancamento)
+	fc.Result = res
+	return ec.marshalOLancamento2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐLancamento(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Categoria_lancamento(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Categoria",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Lancamento_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_Lancamento_descricao(ctx, field)
+			case "tipo":
+				return ec.fieldContext_Lancamento_tipo(ctx, field)
+			case "categoria":
+				return ec.fieldContext_Lancamento_categoria(ctx, field)
+			case "valor":
+				return ec.fieldContext_Lancamento_valor(ctx, field)
+			case "formaPagamento":
+				return ec.fieldContext_Lancamento_formaPagamento(ctx, field)
+			case "observacao":
+				return ec.fieldContext_Lancamento_observacao(ctx, field)
+			case "necessidade":
+				return ec.fieldContext_Lancamento_necessidade(ctx, field)
+			case "recorrencia":
+				return ec.fieldContext_Lancamento_recorrencia(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Lancamento", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FormaPagamento_id(ctx context.Context, field graphql.CollectedField, obj *model.FormaPagamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FormaPagamento_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FormaPagamento_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FormaPagamento",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FormaPagamento_descricao(ctx context.Context, field graphql.CollectedField, obj *model.FormaPagamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FormaPagamento_descricao(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Descricao, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FormaPagamento_descricao(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FormaPagamento",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _FormaPagamento_lancamento(ctx context.Context, field graphql.CollectedField, obj *model.FormaPagamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_FormaPagamento_lancamento(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Lancamento, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Lancamento)
+	fc.Result = res
+	return ec.marshalOLancamento2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐLancamento(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_FormaPagamento_lancamento(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "FormaPagamento",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Lancamento_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_Lancamento_descricao(ctx, field)
+			case "tipo":
+				return ec.fieldContext_Lancamento_tipo(ctx, field)
+			case "categoria":
+				return ec.fieldContext_Lancamento_categoria(ctx, field)
+			case "valor":
+				return ec.fieldContext_Lancamento_valor(ctx, field)
+			case "formaPagamento":
+				return ec.fieldContext_Lancamento_formaPagamento(ctx, field)
+			case "observacao":
+				return ec.fieldContext_Lancamento_observacao(ctx, field)
+			case "necessidade":
+				return ec.fieldContext_Lancamento_necessidade(ctx, field)
+			case "recorrencia":
+				return ec.fieldContext_Lancamento_recorrencia(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Lancamento", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Lancamento_id(ctx context.Context, field graphql.CollectedField, obj *model.Lancamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Lancamento_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Lancamento_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Lancamento",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Lancamento_descricao(ctx context.Context, field graphql.CollectedField, obj *model.Lancamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Lancamento_descricao(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Descricao, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Lancamento_descricao(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Lancamento",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Lancamento_tipo(ctx context.Context, field graphql.CollectedField, obj *model.Lancamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Lancamento_tipo(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Tipo, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.TipoLacamento)
+	fc.Result = res
+	return ec.marshalNTipoLacamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLacamento(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Lancamento_tipo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Lancamento",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_TipoLacamento_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_TipoLacamento_descricao(ctx, field)
+			case "lancamento":
+				return ec.fieldContext_TipoLacamento_lancamento(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TipoLacamento", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Lancamento_categoria(ctx context.Context, field graphql.CollectedField, obj *model.Lancamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Lancamento_categoria(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Categoria, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Categoria)
+	fc.Result = res
+	return ec.marshalNCategoria2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐCategoria(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Lancamento_categoria(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Lancamento",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Categoria_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_Categoria_descricao(ctx, field)
+			case "lancamento":
+				return ec.fieldContext_Categoria_lancamento(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Categoria", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Lancamento_valor(ctx context.Context, field graphql.CollectedField, obj *model.Lancamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Lancamento_valor(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Valor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(float64)
+	fc.Result = res
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Lancamento_valor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Lancamento",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Float does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Lancamento_formaPagamento(ctx context.Context, field graphql.CollectedField, obj *model.Lancamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Lancamento_formaPagamento(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.FormaPagamento, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.FormaPagamento)
+	fc.Result = res
+	return ec.marshalNFormaPagamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐFormaPagamento(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Lancamento_formaPagamento(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Lancamento",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_FormaPagamento_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_FormaPagamento_descricao(ctx, field)
+			case "lancamento":
+				return ec.fieldContext_FormaPagamento_lancamento(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FormaPagamento", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Lancamento_observacao(ctx context.Context, field graphql.CollectedField, obj *model.Lancamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Lancamento_observacao(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Observacao, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*string)
+	fc.Result = res
+	return ec.marshalOString2ᚖstring(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Lancamento_observacao(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Lancamento",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Lancamento_necessidade(ctx context.Context, field graphql.CollectedField, obj *model.Lancamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Lancamento_necessidade(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Necessidade, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.NivelNecessidade)
+	fc.Result = res
+	return ec.marshalNNivelNecessidade2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNivelNecessidade(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Lancamento_necessidade(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Lancamento",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_NivelNecessidade_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_NivelNecessidade_descricao(ctx, field)
+			case "cor":
+				return ec.fieldContext_NivelNecessidade_cor(ctx, field)
+			case "lancamento":
+				return ec.fieldContext_NivelNecessidade_lancamento(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type NivelNecessidade", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Lancamento_recorrencia(ctx context.Context, field graphql.CollectedField, obj *model.Lancamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Lancamento_recorrencia(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Recorrencia, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.(*int32)
+	fc.Result = res
+	return ec.marshalOInt2ᚖint32(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Lancamento_recorrencia(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Lancamento",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Int does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_criarLacamento(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_criarLacamento(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CriarLacamento(rctx, fc.Args["input"].(model.NovoLancamento))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Lancamento)
+	fc.Result = res
+	return ec.marshalNLancamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐLancamento(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_criarLacamento(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Mutation",
 		Field:      field,
@@ -420,15 +1467,25 @@ func (ec *executionContext) fieldContext_Mutation_createTodo(ctx context.Context
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_Todo_id(ctx, field)
-			case "text":
-				return ec.fieldContext_Todo_text(ctx, field)
-			case "done":
-				return ec.fieldContext_Todo_done(ctx, field)
-			case "user":
-				return ec.fieldContext_Todo_user(ctx, field)
+				return ec.fieldContext_Lancamento_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_Lancamento_descricao(ctx, field)
+			case "tipo":
+				return ec.fieldContext_Lancamento_tipo(ctx, field)
+			case "categoria":
+				return ec.fieldContext_Lancamento_categoria(ctx, field)
+			case "valor":
+				return ec.fieldContext_Lancamento_valor(ctx, field)
+			case "formaPagamento":
+				return ec.fieldContext_Lancamento_formaPagamento(ctx, field)
+			case "observacao":
+				return ec.fieldContext_Lancamento_observacao(ctx, field)
+			case "necessidade":
+				return ec.fieldContext_Lancamento_necessidade(ctx, field)
+			case "recorrencia":
+				return ec.fieldContext_Lancamento_recorrencia(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Todo", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type Lancamento", field.Name)
 		},
 	}
 	defer func() {
@@ -438,15 +1495,15 @@ func (ec *executionContext) fieldContext_Mutation_createTodo(ctx context.Context
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_createTodo_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Mutation_criarLacamento_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
 	return fc, nil
 }
 
-func (ec *executionContext) _Query_todos(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_todos(ctx, field)
+func (ec *executionContext) _Mutation_criarCategoria(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_criarCategoria(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -459,7 +1516,7 @@ func (ec *executionContext) _Query_todos(ctx context.Context, field graphql.Coll
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Todos(rctx)
+		return ec.resolvers.Mutation().CriarCategoria(rctx, fc.Args["input"].(model.NovaCategoria))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -471,12 +1528,456 @@ func (ec *executionContext) _Query_todos(ctx context.Context, field graphql.Coll
 		}
 		return graphql.Null
 	}
-	res := resTmp.([]*model.Todo)
+	res := resTmp.(*model.Categoria)
 	fc.Result = res
-	return ec.marshalNTodo2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTodoᚄ(ctx, field.Selections, res)
+	return ec.marshalNCategoria2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐCategoria(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Query_todos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Mutation_criarCategoria(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Categoria_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_Categoria_descricao(ctx, field)
+			case "lancamento":
+				return ec.fieldContext_Categoria_lancamento(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Categoria", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_criarCategoria_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_criarTipoLacamento(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_criarTipoLacamento(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CriarTipoLacamento(rctx, fc.Args["input"].(model.NovoTipoLancamento))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.TipoLacamento)
+	fc.Result = res
+	return ec.marshalNTipoLacamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLacamento(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_criarTipoLacamento(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_TipoLacamento_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_TipoLacamento_descricao(ctx, field)
+			case "lancamento":
+				return ec.fieldContext_TipoLacamento_lancamento(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TipoLacamento", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_criarTipoLacamento_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_criarFormaPagamento(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_criarFormaPagamento(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CriarFormaPagamento(rctx, fc.Args["input"].(model.NovaFormaPagamento))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.FormaPagamento)
+	fc.Result = res
+	return ec.marshalNFormaPagamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐFormaPagamento(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_criarFormaPagamento(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_FormaPagamento_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_FormaPagamento_descricao(ctx, field)
+			case "lancamento":
+				return ec.fieldContext_FormaPagamento_lancamento(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FormaPagamento", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_criarFormaPagamento_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Mutation_criarNivelNecessidade(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_criarNivelNecessidade(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CriarNivelNecessidade(rctx, fc.Args["input"].(model.NovoNivelNecessidade))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.NivelNecessidade)
+	fc.Result = res
+	return ec.marshalNNivelNecessidade2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNivelNecessidade(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Mutation_criarNivelNecessidade(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_NivelNecessidade_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_NivelNecessidade_descricao(ctx, field)
+			case "cor":
+				return ec.fieldContext_NivelNecessidade_cor(ctx, field)
+			case "lancamento":
+				return ec.fieldContext_NivelNecessidade_lancamento(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type NivelNecessidade", field.Name)
+		},
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			err = ec.Recover(ctx, r)
+			ec.Error(ctx, err)
+		}
+	}()
+	ctx = graphql.WithFieldContext(ctx, fc)
+	if fc.Args, err = ec.field_Mutation_criarNivelNecessidade_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+		ec.Error(ctx, err)
+		return fc, err
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NivelNecessidade_id(ctx context.Context, field graphql.CollectedField, obj *model.NivelNecessidade) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NivelNecessidade_id(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NivelNecessidade_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NivelNecessidade",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type ID does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NivelNecessidade_descricao(ctx context.Context, field graphql.CollectedField, obj *model.NivelNecessidade) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NivelNecessidade_descricao(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Descricao, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NivelNecessidade_descricao(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NivelNecessidade",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NivelNecessidade_cor(ctx context.Context, field graphql.CollectedField, obj *model.NivelNecessidade) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NivelNecessidade_cor(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Cor, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NivelNecessidade_cor(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NivelNecessidade",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _NivelNecessidade_lancamento(ctx context.Context, field graphql.CollectedField, obj *model.NivelNecessidade) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_NivelNecessidade_lancamento(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Lancamento, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Lancamento)
+	fc.Result = res
+	return ec.marshalOLancamento2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐLancamento(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_NivelNecessidade_lancamento(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "NivelNecessidade",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Lancamento_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_Lancamento_descricao(ctx, field)
+			case "tipo":
+				return ec.fieldContext_Lancamento_tipo(ctx, field)
+			case "categoria":
+				return ec.fieldContext_Lancamento_categoria(ctx, field)
+			case "valor":
+				return ec.fieldContext_Lancamento_valor(ctx, field)
+			case "formaPagamento":
+				return ec.fieldContext_Lancamento_formaPagamento(ctx, field)
+			case "observacao":
+				return ec.fieldContext_Lancamento_observacao(ctx, field)
+			case "necessidade":
+				return ec.fieldContext_Lancamento_necessidade(ctx, field)
+			case "recorrencia":
+				return ec.fieldContext_Lancamento_recorrencia(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Lancamento", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_lacamentos(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_lacamentos(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Lacamentos(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Lancamento)
+	fc.Result = res
+	return ec.marshalOLancamento2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐLancamento(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_lacamentos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Query",
 		Field:      field,
@@ -485,15 +1986,223 @@ func (ec *executionContext) fieldContext_Query_todos(_ context.Context, field gr
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_Todo_id(ctx, field)
-			case "text":
-				return ec.fieldContext_Todo_text(ctx, field)
-			case "done":
-				return ec.fieldContext_Todo_done(ctx, field)
-			case "user":
-				return ec.fieldContext_Todo_user(ctx, field)
+				return ec.fieldContext_Lancamento_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_Lancamento_descricao(ctx, field)
+			case "tipo":
+				return ec.fieldContext_Lancamento_tipo(ctx, field)
+			case "categoria":
+				return ec.fieldContext_Lancamento_categoria(ctx, field)
+			case "valor":
+				return ec.fieldContext_Lancamento_valor(ctx, field)
+			case "formaPagamento":
+				return ec.fieldContext_Lancamento_formaPagamento(ctx, field)
+			case "observacao":
+				return ec.fieldContext_Lancamento_observacao(ctx, field)
+			case "necessidade":
+				return ec.fieldContext_Lancamento_necessidade(ctx, field)
+			case "recorrencia":
+				return ec.fieldContext_Lancamento_recorrencia(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type Todo", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type Lancamento", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_categorias(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_categorias(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Categorias(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Categoria)
+	fc.Result = res
+	return ec.marshalOCategoria2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐCategoria(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_categorias(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_Categoria_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_Categoria_descricao(ctx, field)
+			case "lancamento":
+				return ec.fieldContext_Categoria_lancamento(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type Categoria", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_tiposLacamento(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_tiposLacamento(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().TiposLacamento(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*model.TipoLacamento)
+	fc.Result = res
+	return ec.marshalOTipoLacamento2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLacamento(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_tiposLacamento(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_TipoLacamento_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_TipoLacamento_descricao(ctx, field)
+			case "lancamento":
+				return ec.fieldContext_TipoLacamento_lancamento(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type TipoLacamento", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_formasPagamento(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_formasPagamento(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().FormasPagamento(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*model.FormaPagamento)
+	fc.Result = res
+	return ec.marshalOFormaPagamento2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐFormaPagamento(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_formasPagamento(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_FormaPagamento_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_FormaPagamento_descricao(ctx, field)
+			case "lancamento":
+				return ec.fieldContext_FormaPagamento_lancamento(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type FormaPagamento", field.Name)
+		},
+	}
+	return fc, nil
+}
+
+func (ec *executionContext) _Query_niveisNecessidade(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_niveisNecessidade(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().NiveisNecessidade(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]*model.NivelNecessidade)
+	fc.Result = res
+	return ec.marshalONivelNecessidade2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNivelNecessidade(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Query_niveisNecessidade(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			switch field.Name {
+			case "id":
+				return ec.fieldContext_NivelNecessidade_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_NivelNecessidade_descricao(ctx, field)
+			case "cor":
+				return ec.fieldContext_NivelNecessidade_cor(ctx, field)
+			case "lancamento":
+				return ec.fieldContext_NivelNecessidade_lancamento(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type NivelNecessidade", field.Name)
 		},
 	}
 	return fc, nil
@@ -628,8 +2337,8 @@ func (ec *executionContext) fieldContext_Query___schema(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _Todo_id(ctx context.Context, field graphql.CollectedField, obj *model.Todo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Todo_id(ctx, field)
+func (ec *executionContext) _TipoLacamento_id(ctx context.Context, field graphql.CollectedField, obj *model.TipoLacamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TipoLacamento_id(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -659,9 +2368,9 @@ func (ec *executionContext) _Todo_id(ctx context.Context, field graphql.Collecte
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Todo_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TipoLacamento_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "Todo",
+		Object:     "TipoLacamento",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -672,8 +2381,8 @@ func (ec *executionContext) fieldContext_Todo_id(_ context.Context, field graphq
 	return fc, nil
 }
 
-func (ec *executionContext) _Todo_text(ctx context.Context, field graphql.CollectedField, obj *model.Todo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Todo_text(ctx, field)
+func (ec *executionContext) _TipoLacamento_descricao(ctx context.Context, field graphql.CollectedField, obj *model.TipoLacamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TipoLacamento_descricao(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -686,7 +2395,7 @@ func (ec *executionContext) _Todo_text(ctx context.Context, field graphql.Collec
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Text, nil
+		return obj.Descricao, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -703,9 +2412,9 @@ func (ec *executionContext) _Todo_text(ctx context.Context, field graphql.Collec
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Todo_text(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TipoLacamento_descricao(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "Todo",
+		Object:     "TipoLacamento",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -716,8 +2425,8 @@ func (ec *executionContext) fieldContext_Todo_text(_ context.Context, field grap
 	return fc, nil
 }
 
-func (ec *executionContext) _Todo_done(ctx context.Context, field graphql.CollectedField, obj *model.Todo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Todo_done(ctx, field)
+func (ec *executionContext) _TipoLacamento_lancamento(ctx context.Context, field graphql.CollectedField, obj *model.TipoLacamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TipoLacamento_lancamento(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -730,169 +2439,48 @@ func (ec *executionContext) _Todo_done(ctx context.Context, field graphql.Collec
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Done, nil
+		return obj.Lancamento, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
 	}
 	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
 		return graphql.Null
 	}
-	res := resTmp.(bool)
+	res := resTmp.([]*model.Lancamento)
 	fc.Result = res
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+	return ec.marshalOLancamento2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐLancamento(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Todo_done(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TipoLacamento_lancamento(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "Todo",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type Boolean does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _Todo_user(ctx context.Context, field graphql.CollectedField, obj *model.Todo) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Todo_user(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.User, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*model.User)
-	fc.Result = res
-	return ec.marshalNUser2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_Todo_user(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "Todo",
+		Object:     "TipoLacamento",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_User_id(ctx, field)
-			case "name":
-				return ec.fieldContext_User_name(ctx, field)
+				return ec.fieldContext_Lancamento_id(ctx, field)
+			case "descricao":
+				return ec.fieldContext_Lancamento_descricao(ctx, field)
+			case "tipo":
+				return ec.fieldContext_Lancamento_tipo(ctx, field)
+			case "categoria":
+				return ec.fieldContext_Lancamento_categoria(ctx, field)
+			case "valor":
+				return ec.fieldContext_Lancamento_valor(ctx, field)
+			case "formaPagamento":
+				return ec.fieldContext_Lancamento_formaPagamento(ctx, field)
+			case "observacao":
+				return ec.fieldContext_Lancamento_observacao(ctx, field)
+			case "necessidade":
+				return ec.fieldContext_Lancamento_necessidade(ctx, field)
+			case "recorrencia":
+				return ec.fieldContext_Lancamento_recorrencia(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _User_id(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_User_id(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.ID, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNID2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_User_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "User",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type ID does not have child fields")
-		},
-	}
-	return fc, nil
-}
-
-func (ec *executionContext) _User_name(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_User_name(ctx, field)
-	if err != nil {
-		return graphql.Null
-	}
-	ctx = graphql.WithFieldContext(ctx, fc)
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Name, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(string)
-	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) fieldContext_User_name(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
-	fc = &graphql.FieldContext{
-		Object:     "User",
-		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
-		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
+			return nil, fmt.Errorf("no field named %q was found under type Lancamento", field.Name)
 		},
 	}
 	return fc, nil
@@ -2671,34 +4259,191 @@ func (ec *executionContext) fieldContext___Type_specifiedByURL(_ context.Context
 
 // region    **************************** input.gotpl *****************************
 
-func (ec *executionContext) unmarshalInputNewTodo(ctx context.Context, obj any) (model.NewTodo, error) {
-	var it model.NewTodo
+func (ec *executionContext) unmarshalInputNovaCategoria(ctx context.Context, obj any) (model.NovaCategoria, error) {
+	var it model.NovaCategoria
 	asMap := map[string]any{}
 	for k, v := range obj.(map[string]any) {
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"text", "userId"}
+	fieldsInOrder := [...]string{"descricao"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
 			continue
 		}
 		switch k {
-		case "text":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("text"))
+		case "descricao":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descricao"))
 			data, err := ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Text = data
-		case "userId":
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId"))
+			it.Descricao = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNovaFormaPagamento(ctx context.Context, obj any) (model.NovaFormaPagamento, error) {
+	var it model.NovaFormaPagamento
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"descricao"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "descricao":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descricao"))
 			data, err := ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.UserID = data
+			it.Descricao = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNovoLancamento(ctx context.Context, obj any) (model.NovoLancamento, error) {
+	var it model.NovoLancamento
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"descricao", "valor", "observacao", "recorrencia", "tipoId", "categoriaId", "formaPagamentoId", "necessidadeId"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "descricao":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descricao"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Descricao = data
+		case "valor":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("valor"))
+			data, err := ec.unmarshalNFloat2float64(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Valor = data
+		case "observacao":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("observacao"))
+			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Observacao = data
+		case "recorrencia":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("recorrencia"))
+			data, err := ec.unmarshalOInt2ᚖint32(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Recorrencia = data
+		case "tipoId":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("tipoId"))
+			data, err := ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.TipoID = data
+		case "categoriaId":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("categoriaId"))
+			data, err := ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.CategoriaID = data
+		case "formaPagamentoId":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("formaPagamentoId"))
+			data, err := ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.FormaPagamentoID = data
+		case "necessidadeId":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("necessidadeId"))
+			data, err := ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.NecessidadeID = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNovoNivelNecessidade(ctx context.Context, obj any) (model.NovoNivelNecessidade, error) {
+	var it model.NovoNivelNecessidade
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"descricao", "cor"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "descricao":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descricao"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Descricao = data
+		case "cor":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("cor"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Cor = data
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNovoTipoLancamento(ctx context.Context, obj any) (model.NovoTipoLancamento, error) {
+	var it model.NovoTipoLancamento
+	asMap := map[string]any{}
+	for k, v := range obj.(map[string]any) {
+		asMap[k] = v
+	}
+
+	fieldsInOrder := [...]string{"descricao"}
+	for _, k := range fieldsInOrder {
+		v, ok := asMap[k]
+		if !ok {
+			continue
+		}
+		switch k {
+		case "descricao":
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("descricao"))
+			data, err := ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+			it.Descricao = data
 		}
 	}
 
@@ -2712,6 +4457,171 @@ func (ec *executionContext) unmarshalInputNewTodo(ctx context.Context, obj any) 
 // endregion ************************** interface.gotpl ***************************
 
 // region    **************************** object.gotpl ****************************
+
+var categoriaImplementors = []string{"Categoria"}
+
+func (ec *executionContext) _Categoria(ctx context.Context, sel ast.SelectionSet, obj *model.Categoria) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, categoriaImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Categoria")
+		case "id":
+			out.Values[i] = ec._Categoria_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "descricao":
+			out.Values[i] = ec._Categoria_descricao(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "lancamento":
+			out.Values[i] = ec._Categoria_lancamento(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var formaPagamentoImplementors = []string{"FormaPagamento"}
+
+func (ec *executionContext) _FormaPagamento(ctx context.Context, sel ast.SelectionSet, obj *model.FormaPagamento) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, formaPagamentoImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("FormaPagamento")
+		case "id":
+			out.Values[i] = ec._FormaPagamento_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "descricao":
+			out.Values[i] = ec._FormaPagamento_descricao(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "lancamento":
+			out.Values[i] = ec._FormaPagamento_lancamento(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var lancamentoImplementors = []string{"Lancamento"}
+
+func (ec *executionContext) _Lancamento(ctx context.Context, sel ast.SelectionSet, obj *model.Lancamento) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, lancamentoImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("Lancamento")
+		case "id":
+			out.Values[i] = ec._Lancamento_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "descricao":
+			out.Values[i] = ec._Lancamento_descricao(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "tipo":
+			out.Values[i] = ec._Lancamento_tipo(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "categoria":
+			out.Values[i] = ec._Lancamento_categoria(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "valor":
+			out.Values[i] = ec._Lancamento_valor(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "formaPagamento":
+			out.Values[i] = ec._Lancamento_formaPagamento(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "observacao":
+			out.Values[i] = ec._Lancamento_observacao(ctx, field, obj)
+		case "necessidade":
+			out.Values[i] = ec._Lancamento_necessidade(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "recorrencia":
+			out.Values[i] = ec._Lancamento_recorrencia(ctx, field, obj)
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
 
 var mutationImplementors = []string{"Mutation"}
 
@@ -2732,13 +4642,92 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Mutation")
-		case "createTodo":
+		case "criarLacamento":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_createTodo(ctx, field)
+				return ec._Mutation_criarLacamento(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "criarCategoria":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_criarCategoria(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "criarTipoLacamento":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_criarTipoLacamento(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "criarFormaPagamento":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_criarFormaPagamento(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "criarNivelNecessidade":
+			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
+				return ec._Mutation_criarNivelNecessidade(ctx, field)
+			})
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch(ctx)
+	if out.Invalids > 0 {
+		return graphql.Null
+	}
+
+	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
+
+	for label, dfs := range deferred {
+		ec.processDeferredGroup(graphql.DeferredGroup{
+			Label:    label,
+			Path:     graphql.GetPath(ctx),
+			FieldSet: dfs,
+			Context:  ctx,
+		})
+	}
+
+	return out
+}
+
+var nivelNecessidadeImplementors = []string{"NivelNecessidade"}
+
+func (ec *executionContext) _NivelNecessidade(ctx context.Context, sel ast.SelectionSet, obj *model.NivelNecessidade) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, nivelNecessidadeImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	deferred := make(map[string]*graphql.FieldSet)
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("NivelNecessidade")
+		case "id":
+			out.Values[i] = ec._NivelNecessidade_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "descricao":
+			out.Values[i] = ec._NivelNecessidade_descricao(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "cor":
+			out.Values[i] = ec._NivelNecessidade_cor(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				out.Invalids++
+			}
+		case "lancamento":
+			out.Values[i] = ec._NivelNecessidade_lancamento(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -2781,19 +4770,92 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Query")
-		case "todos":
+		case "lacamentos":
 			field := field
 
-			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
 				defer func() {
 					if r := recover(); r != nil {
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_todos(ctx, field)
-				if res == graphql.Null {
-					atomic.AddUint32(&fs.Invalids, 1)
-				}
+				res = ec._Query_lacamentos(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "categorias":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_categorias(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "tiposLacamento":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_tiposLacamento(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "formasPagamento":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_formasPagamento(ctx, field)
+				return res
+			}
+
+			rrm := func(ctx context.Context) graphql.Marshaler {
+				return ec.OperationContext.RootResolverMiddleware(ctx,
+					func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
+		case "niveisNecessidade":
+			field := field
+
+			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_niveisNecessidade(ctx, field)
 				return res
 			}
 
@@ -2834,81 +4896,29 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 	return out
 }
 
-var todoImplementors = []string{"Todo"}
+var tipoLacamentoImplementors = []string{"TipoLacamento"}
 
-func (ec *executionContext) _Todo(ctx context.Context, sel ast.SelectionSet, obj *model.Todo) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, todoImplementors)
-
-	out := graphql.NewFieldSet(fields)
-	deferred := make(map[string]*graphql.FieldSet)
-	for i, field := range fields {
-		switch field.Name {
-		case "__typename":
-			out.Values[i] = graphql.MarshalString("Todo")
-		case "id":
-			out.Values[i] = ec._Todo_id(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "text":
-			out.Values[i] = ec._Todo_text(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "done":
-			out.Values[i] = ec._Todo_done(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		case "user":
-			out.Values[i] = ec._Todo_user(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
-			}
-		default:
-			panic("unknown field " + strconv.Quote(field.Name))
-		}
-	}
-	out.Dispatch(ctx)
-	if out.Invalids > 0 {
-		return graphql.Null
-	}
-
-	atomic.AddInt32(&ec.deferred, int32(len(deferred)))
-
-	for label, dfs := range deferred {
-		ec.processDeferredGroup(graphql.DeferredGroup{
-			Label:    label,
-			Path:     graphql.GetPath(ctx),
-			FieldSet: dfs,
-			Context:  ctx,
-		})
-	}
-
-	return out
-}
-
-var userImplementors = []string{"User"}
-
-func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj *model.User) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, userImplementors)
+func (ec *executionContext) _TipoLacamento(ctx context.Context, sel ast.SelectionSet, obj *model.TipoLacamento) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, tipoLacamentoImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	deferred := make(map[string]*graphql.FieldSet)
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("User")
+			out.Values[i] = graphql.MarshalString("TipoLacamento")
 		case "id":
-			out.Values[i] = ec._User_id(ctx, field, obj)
+			out.Values[i] = ec._TipoLacamento_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "name":
-			out.Values[i] = ec._User_name(ctx, field, obj)
+		case "descricao":
+			out.Values[i] = ec._TipoLacamento_descricao(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
+		case "lancamento":
+			out.Values[i] = ec._TipoLacamento_lancamento(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -3273,6 +5283,49 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
+func (ec *executionContext) marshalNCategoria2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐCategoria(ctx context.Context, sel ast.SelectionSet, v model.Categoria) graphql.Marshaler {
+	return ec._Categoria(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNCategoria2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐCategoria(ctx context.Context, sel ast.SelectionSet, v *model.Categoria) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._Categoria(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNFloat2float64(ctx context.Context, v any) (float64, error) {
+	res, err := graphql.UnmarshalFloatContext(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNFloat2float64(ctx context.Context, sel ast.SelectionSet, v float64) graphql.Marshaler {
+	res := graphql.MarshalFloatContext(v)
+	if res == graphql.Null {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+	}
+	return graphql.WrapContextMarshaler(ctx, res)
+}
+
+func (ec *executionContext) marshalNFormaPagamento2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐFormaPagamento(ctx context.Context, sel ast.SelectionSet, v model.FormaPagamento) graphql.Marshaler {
+	return ec._FormaPagamento(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNFormaPagamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐFormaPagamento(ctx context.Context, sel ast.SelectionSet, v *model.FormaPagamento) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._FormaPagamento(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNID2string(ctx context.Context, v any) (string, error) {
 	res, err := graphql.UnmarshalID(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -3288,8 +5341,56 @@ func (ec *executionContext) marshalNID2string(ctx context.Context, sel ast.Selec
 	return res
 }
 
-func (ec *executionContext) unmarshalNNewTodo2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNewTodo(ctx context.Context, v any) (model.NewTodo, error) {
-	res, err := ec.unmarshalInputNewTodo(ctx, v)
+func (ec *executionContext) marshalNLancamento2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐLancamento(ctx context.Context, sel ast.SelectionSet, v model.Lancamento) graphql.Marshaler {
+	return ec._Lancamento(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNLancamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐLancamento(ctx context.Context, sel ast.SelectionSet, v *model.Lancamento) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._Lancamento(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNNivelNecessidade2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNivelNecessidade(ctx context.Context, sel ast.SelectionSet, v model.NivelNecessidade) graphql.Marshaler {
+	return ec._NivelNecessidade(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNNivelNecessidade2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNivelNecessidade(ctx context.Context, sel ast.SelectionSet, v *model.NivelNecessidade) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
+		}
+		return graphql.Null
+	}
+	return ec._NivelNecessidade(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNNovaCategoria2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNovaCategoria(ctx context.Context, v any) (model.NovaCategoria, error) {
+	res, err := ec.unmarshalInputNovaCategoria(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNNovaFormaPagamento2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNovaFormaPagamento(ctx context.Context, v any) (model.NovaFormaPagamento, error) {
+	res, err := ec.unmarshalInputNovaFormaPagamento(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNNovoLancamento2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNovoLancamento(ctx context.Context, v any) (model.NovoLancamento, error) {
+	res, err := ec.unmarshalInputNovoLancamento(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNNovoNivelNecessidade2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNovoNivelNecessidade(ctx context.Context, v any) (model.NovoNivelNecessidade, error) {
+	res, err := ec.unmarshalInputNovoNivelNecessidade(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNNovoTipoLancamento2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNovoTipoLancamento(ctx context.Context, v any) (model.NovoTipoLancamento, error) {
+	res, err := ec.unmarshalInputNovoTipoLancamento(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
@@ -3308,72 +5409,18 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 	return res
 }
 
-func (ec *executionContext) marshalNTodo2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTodo(ctx context.Context, sel ast.SelectionSet, v model.Todo) graphql.Marshaler {
-	return ec._Todo(ctx, sel, &v)
+func (ec *executionContext) marshalNTipoLacamento2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLacamento(ctx context.Context, sel ast.SelectionSet, v model.TipoLacamento) graphql.Marshaler {
+	return ec._TipoLacamento(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNTodo2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTodoᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Todo) graphql.Marshaler {
-	ret := make(graphql.Array, len(v))
-	var wg sync.WaitGroup
-	isLen1 := len(v) == 1
-	if !isLen1 {
-		wg.Add(len(v))
-	}
-	for i := range v {
-		i := i
-		fc := &graphql.FieldContext{
-			Index:  &i,
-			Result: &v[i],
-		}
-		ctx := graphql.WithFieldContext(ctx, fc)
-		f := func(i int) {
-			defer func() {
-				if r := recover(); r != nil {
-					ec.Error(ctx, ec.Recover(ctx, r))
-					ret = nil
-				}
-			}()
-			if !isLen1 {
-				defer wg.Done()
-			}
-			ret[i] = ec.marshalNTodo2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTodo(ctx, sel, v[i])
-		}
-		if isLen1 {
-			f(i)
-		} else {
-			go f(i)
-		}
-
-	}
-	wg.Wait()
-
-	for _, e := range ret {
-		if e == graphql.Null {
-			return graphql.Null
-		}
-	}
-
-	return ret
-}
-
-func (ec *executionContext) marshalNTodo2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTodo(ctx context.Context, sel ast.SelectionSet, v *model.Todo) graphql.Marshaler {
+func (ec *executionContext) marshalNTipoLacamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLacamento(ctx context.Context, sel ast.SelectionSet, v *model.TipoLacamento) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
 		}
 		return graphql.Null
 	}
-	return ec._Todo(ctx, sel, v)
-}
-
-func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
-	if v == nil {
-		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
-			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
-		}
-		return graphql.Null
-	}
-	return ec._User(ctx, sel, v)
+	return ec._TipoLacamento(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {
@@ -3655,6 +5702,214 @@ func (ec *executionContext) marshalOBoolean2ᚖbool(ctx context.Context, sel ast
 	return res
 }
 
+func (ec *executionContext) marshalOCategoria2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐCategoria(ctx context.Context, sel ast.SelectionSet, v []*model.Categoria) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOCategoria2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐCategoria(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) marshalOCategoria2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐCategoria(ctx context.Context, sel ast.SelectionSet, v *model.Categoria) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Categoria(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOFormaPagamento2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐFormaPagamento(ctx context.Context, sel ast.SelectionSet, v []*model.FormaPagamento) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOFormaPagamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐFormaPagamento(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) marshalOFormaPagamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐFormaPagamento(ctx context.Context, sel ast.SelectionSet, v *model.FormaPagamento) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._FormaPagamento(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalOInt2ᚖint32(ctx context.Context, v any) (*int32, error) {
+	if v == nil {
+		return nil, nil
+	}
+	res, err := graphql.UnmarshalInt32(v)
+	return &res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalOInt2ᚖint32(ctx context.Context, sel ast.SelectionSet, v *int32) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	res := graphql.MarshalInt32(*v)
+	return res
+}
+
+func (ec *executionContext) marshalOLancamento2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐLancamento(ctx context.Context, sel ast.SelectionSet, v []*model.Lancamento) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOLancamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐLancamento(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) marshalOLancamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐLancamento(ctx context.Context, sel ast.SelectionSet, v *model.Lancamento) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Lancamento(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalONivelNecessidade2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNivelNecessidade(ctx context.Context, sel ast.SelectionSet, v []*model.NivelNecessidade) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalONivelNecessidade2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNivelNecessidade(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) marshalONivelNecessidade2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐNivelNecessidade(ctx context.Context, sel ast.SelectionSet, v *model.NivelNecessidade) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._NivelNecessidade(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalOString2ᚖstring(ctx context.Context, v any) (*string, error) {
 	if v == nil {
 		return nil, nil
@@ -3669,6 +5924,54 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	}
 	res := graphql.MarshalString(*v)
 	return res
+}
+
+func (ec *executionContext) marshalOTipoLacamento2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLacamento(ctx context.Context, sel ast.SelectionSet, v []*model.TipoLacamento) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOTipoLacamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLacamento(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) marshalOTipoLacamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLacamento(ctx context.Context, sel ast.SelectionSet, v *model.TipoLacamento) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._TipoLacamento(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐEnumValueᚄ(ctx context.Context, sel ast.SelectionSet, v []introspection.EnumValue) graphql.Marshaler {

@@ -2,25 +2,73 @@
 
 package model
 
+type Categoria struct {
+	ID         string        `json:"id"`
+	Descricao  string        `json:"descricao"`
+	Lancamento []*Lancamento `json:"lancamento,omitempty"`
+}
+
+type FormaPagamento struct {
+	ID         string        `json:"id"`
+	Descricao  string        `json:"descricao"`
+	Lancamento []*Lancamento `json:"lancamento,omitempty"`
+}
+
+type Lancamento struct {
+	ID             string            `json:"id"`
+	Descricao      string            `json:"descricao"`
+	Tipo           *TipoLacamento    `json:"tipo"`
+	Categoria      *Categoria        `json:"categoria"`
+	Valor          float64           `json:"valor"`
+	FormaPagamento *FormaPagamento   `json:"formaPagamento"`
+	Observacao     *string           `json:"observacao,omitempty"`
+	Necessidade    *NivelNecessidade `json:"necessidade"`
+	Recorrencia    *int32            `json:"recorrencia,omitempty"`
+}
+
 type Mutation struct {
 }
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
+type NivelNecessidade struct {
+	ID         string        `json:"id"`
+	Descricao  string        `json:"descricao"`
+	Cor        string        `json:"cor"`
+	Lancamento []*Lancamento `json:"lancamento,omitempty"`
+}
+
+type NovaCategoria struct {
+	Descricao string `json:"descricao"`
+}
+
+type NovaFormaPagamento struct {
+	Descricao string `json:"descricao"`
+}
+
+type NovoLancamento struct {
+	Descricao        string  `json:"descricao"`
+	Valor            float64 `json:"valor"`
+	Observacao       *string `json:"observacao,omitempty"`
+	Recorrencia      *int32  `json:"recorrencia,omitempty"`
+	TipoID           string  `json:"tipoId"`
+	CategoriaID      string  `json:"categoriaId"`
+	FormaPagamentoID string  `json:"formaPagamentoId"`
+	NecessidadeID    string  `json:"necessidadeId"`
+}
+
+type NovoNivelNecessidade struct {
+	Descricao string `json:"descricao"`
+	Cor       string `json:"cor"`
+}
+
+type NovoTipoLancamento struct {
+	Descricao string `json:"descricao"`
 }
 
 type Query struct {
 }
 
-type Todo struct {
-	ID   string `json:"id"`
-	Text string `json:"text"`
-	Done bool   `json:"done"`
-	User *User  `json:"user"`
-}
-
-type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+type TipoLacamento struct {
+	ID         string        `json:"id"`
+	Descricao  string        `json:"descricao"`
+	Lancamento []*Lancamento `json:"lancamento,omitempty"`
 }

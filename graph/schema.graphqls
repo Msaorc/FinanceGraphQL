@@ -1,45 +1,45 @@
 type Lancamento {
   id: ID!
-  descricao: string!
+  descricao: String!
   tipo: TipoLacamento!
   categoria: Categoria!
-  valor: Decimal!
+  valor: Float!
   formaPagamento: FormaPagamento!
-  observacao: string
+  observacao: String
   necessidade: NivelNecessidade!
-  recorrencia: integer
+  recorrencia: Int
 }
 
 type Categoria{
   id: ID!
-  descricao: string!
+  descricao: String!
   lancamento: [Lancamento]
 }
 
 type TipoLacamento {
   id: ID!
-  descricao: string!
+  descricao: String!
   lancamento: [Lancamento]
 }
 
 type FormaPagamento {
   id: ID!
-  descricao: string!
+  descricao: String!
   lancamento: [Lancamento]
 }
 
 type NivelNecessidade {
   id: ID!
-  descricao: string!
-  cor: string!
+  descricao: String!
+  cor: String!
   lancamento: [Lancamento]
 }
 
 input NovoLancamento {
-  descricao: string!
-  valor: Decimal!
-  observacao: string
-  recorrencia: integer
+  descricao: String!
+  valor: Float!
+  observacao: String
+  recorrencia: Int
   tipoId: ID!
   categoriaId: ID!
   formaPagamentoId: ID!
@@ -47,19 +47,20 @@ input NovoLancamento {
 }
 
 input NovaCategoria {
-  descricao: string!
+  descricao: String!
 }
 
 input NovoTipoLancamento {
-  descricao: string!
+  descricao: String!
 }
 
 input NovaFormaPagamento {
-  descricao: string!
+  descricao: String!
 }
 
 input NovoNivelNecessidade {
-  descricao: string!
+  descricao: String!
+  cor: String!
 }
 
 type Query {
@@ -71,9 +72,9 @@ type Query {
 }
 
 type Mutation {
-  criarLacamento(input: NovoLancamento!) Lancamento!
-  criarCategoria(input: NovaCategoria!) Categoria!
-  criarLacamento(input: NovoTipoLancamento!) TipoLacamento!
-  criarLacamento(input: NovaFormaPagamento!) FormaPagamento!
-  criarLacamento(input: NovoNivelNecessidade!) NivelNecessidade!  
+  criarLacamento(input: NovoLancamento!): Lancamento!
+  criarCategoria(input: NovaCategoria!): Categoria!
+  criarTipoLacamento(input: NovoTipoLancamento!): TipoLacamento!
+  criarFormaPagamento(input: NovaFormaPagamento!): FormaPagamento!
+  criarNivelNecessidade(input: NovoNivelNecessidade!): NivelNecessidade!  
 }
