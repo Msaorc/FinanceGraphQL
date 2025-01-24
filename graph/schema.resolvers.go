@@ -13,7 +13,18 @@ import (
 
 // CriarLacamento is the resolver for the criarLacamento field.
 func (r *mutationResolver) CriarLacamento(ctx context.Context, input model.NovoLancamento) (*model.Lancamento, error) {
-	panic(fmt.Errorf("not implemented: CriarLacamento - criarLacamento"))
+	lancamento, err := r.LacamentoDB.Create(input.Descricao, input.Valor, *input.Observacao, *input.Recorrencia)
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.Lancamento{
+		ID:          lancamento.ID,
+		Descricao:   lancamento.Descricao,
+		Valor:       lancamento.Valor,
+		Observacao:  &lancamento.Observacao,
+		Recorrencia: &lancamento.Recorrencia,
+	}, nil
 }
 
 // CriarCategoria is the resolver for the criarCategoria field.
