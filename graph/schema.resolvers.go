@@ -35,14 +35,22 @@ func (r *mutationResolver) CriarCategoria(ctx context.Context, input model.NovaC
 	}
 
 	return &model.Categoria{
-		ID: categoria.ID,
-		Descricao: categoria.Descricao
+		ID:        categoria.ID,
+		Descricao: categoria.Descricao,
 	}, nil
 }
 
 // CriarTipoLacamento is the resolver for the criarTipoLacamento field.
 func (r *mutationResolver) CriarTipoLacamento(ctx context.Context, input model.NovoTipoLancamento) (*model.TipoLacamento, error) {
-	panic(fmt.Errorf("not implemented: CriarTipoLacamento - criarTipoLacamento"))
+	tipoLancamento, err := r.TipoLancamentoDB.Create(input.Descricao)
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.TipoLacamento{
+		ID:        tipoLancamento.ID,
+		Descricao: tipoLancamento.Descricao,
+	}, nil
 }
 
 // CriarFormaPagamento is the resolver for the criarFormaPagamento field.

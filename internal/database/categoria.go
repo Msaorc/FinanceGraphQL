@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-const sqlInsert = "INSERT INTO lacamentos (id, descricao) VALUES ($1,$2)"
+const sqlInsert = "INSERT INTO categorias (id, descricao) VALUES ($1,$2)"
 
 type Categoria struct {
 	db        *sql.DB
