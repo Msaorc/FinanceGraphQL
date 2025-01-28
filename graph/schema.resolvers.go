@@ -55,7 +55,15 @@ func (r *mutationResolver) CriarTipoLacamento(ctx context.Context, input model.N
 
 // CriarFormaPagamento is the resolver for the criarFormaPagamento field.
 func (r *mutationResolver) CriarFormaPagamento(ctx context.Context, input model.NovaFormaPagamento) (*model.FormaPagamento, error) {
-	panic(fmt.Errorf("not implemented: CriarFormaPagamento - criarFormaPagamento"))
+	formaPagamento, err := r.FormaPagamentoDB.Create(input.Descricao)
+	if err != nil {
+		return &model.FormaPagamento{}, err
+	}
+
+	return &model.FormaPagamento{
+		ID:        formaPagamento.ID,
+		Descricao: formaPagamento.Descricao,
+	}, nil
 }
 
 // CriarNivelNecessidade is the resolver for the criarNivelNecessidade field.

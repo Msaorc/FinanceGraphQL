@@ -6,13 +6,13 @@ import (
 	"github.com/google/uuid"
 )
 
+const sqlInsert = "INSERT INTO tipo_lancamento (id, descricao) VALUES ($1,$2)"
+
 type TipoLacamento struct {
 	db        *sql.DB
 	ID        string
 	Descricao string
 }
-
-const sqlInsert = "INSERT INTO tipo_lancamento (id, descricao) VALUES ($1,$2)"
 
 func NewReleaseType(db *sql.DB) *TipoLacamento {
 	return &TipoLacamento{db: db}

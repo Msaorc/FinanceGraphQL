@@ -10,4 +10,5 @@ type Resolver struct {
 	LacamentoDB      *database.Lancamento
 	CategoriaDB      *database.Categoria
 	TipoLancamentoDB *database.TipoLacamento
+	FormaPagamentoDB *database.FormaPagamento
 }
