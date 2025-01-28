@@ -29,7 +29,15 @@ func (r *mutationResolver) CriarLacamento(ctx context.Context, input model.NovoL
 
 // CriarCategoria is the resolver for the criarCategoria field.
 func (r *mutationResolver) CriarCategoria(ctx context.Context, input model.NovaCategoria) (*model.Categoria, error) {
-	panic(fmt.Errorf("not implemented: CriarCategoria - criarCategoria"))
+	categoria, err := r.CategoriaDB.Create(input.Descricao)
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.Categoria{
+		ID: categoria.ID,
+		Descricao: categoria.Descricao
+	}, nil
 }
 
 // CriarTipoLacamento is the resolver for the criarTipoLacamento field.

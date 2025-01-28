@@ -8,4 +8,5 @@ import "github.com/msaorc/FinanceGraphQL/internal/database"
 
 type Resolver struct {
 	LacamentoDB *database.Lancamento
+	CategoriaDB *database.Categoria
 }
