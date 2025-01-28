@@ -6,12 +6,16 @@ import (
 	"github.com/google/uuid"
 )
 
-const sqlInsert = "INSERT INTO forma_pagamento (id, descricao) VALUES ($1,$2)"
+const sqlInsert = "INSERT INTO nivel_necessidade (id, descricao) VALUES ($1,$2)"
 
 type FormaPagamento struct {
 	db        *sql.DB
 	ID        string
 	Descricao string
+}
+
+func NewPaymentMethod(db *sql.DB) *NivelNecessidade {
+	return &NivelNecessidade{db: db}
 }
 
 func (f *FormaPagamento) Create(descricao string) (FormaPagamento, error) {

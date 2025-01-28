@@ -72,7 +72,7 @@ type Query {
 }
 
 type Mutation {
-  criarLacamento(input: NovoLancamento!): Lancamento!
+  criarLancamento(input: NovoLancamento!): Lancamento!
   criarCategoria(input: NovaCategoria!): Categoria!
   criarTipoLacamento(input: NovoTipoLancamento!): TipoLacamento!
   criarFormaPagamento(input: NovaFormaPagamento!): FormaPagamento!

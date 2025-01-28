@@ -11,8 +11,8 @@ import (
 	"github.com/msaorc/FinanceGraphQL/graph/model"
 )
 
-// CriarLacamento is the resolver for the criarLacamento field.
-func (r *mutationResolver) CriarLacamento(ctx context.Context, input model.NovoLancamento) (*model.Lancamento, error) {
+// CriarLancamento is the resolver for the criarLancamento field.
+func (r *mutationResolver) CriarLancamento(ctx context.Context, input model.NovoLancamento) (*model.Lancamento, error) {
 	lancamento, err := r.LacamentoDB.Create(input.Descricao, input.Valor, *input.Observacao, *input.Recorrencia)
 	if err != nil {
 		return nil, err
@@ -68,7 +68,16 @@ func (r *mutationResolver) CriarFormaPagamento(ctx context.Context, input model.
 
 // CriarNivelNecessidade is the resolver for the criarNivelNecessidade field.
 func (r *mutationResolver) CriarNivelNecessidade(ctx context.Context, input model.NovoNivelNecessidade) (*model.NivelNecessidade, error) {
-	panic(fmt.Errorf("not implemented: CriarNivelNecessidade - criarNivelNecessidade"))
+	nivelNecessidade, err := r.NivelNecessidadeDB.Create(input.Descricao, input.Cor)
+	if err != nil {
+		return &model.NivelNecessidade{}, nil
+	}
+
+	return &model.NivelNecessidade{
+		ID:        nivelNecessidade.ID,
+		Descricao: nivelNecessidade.Descricao,
+		Cor:       nivelNecessidade.Cor,
+	}, nil
 }
 
 // Lacamentos is the resolver for the lacamentos field.

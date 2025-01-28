@@ -74,7 +74,7 @@ type ComplexityRoot struct {
 	Mutation struct {
 		CriarCategoria        func(childComplexity int, input model.NovaCategoria) int
 		CriarFormaPagamento   func(childComplexity int, input model.NovaFormaPagamento) int
-		CriarLacamento        func(childComplexity int, input model.NovoLancamento) int
+		CriarLancamento       func(childComplexity int, input model.NovoLancamento) int
 		CriarNivelNecessidade func(childComplexity int, input model.NovoNivelNecessidade) int
 		CriarTipoLacamento    func(childComplexity int, input model.NovoTipoLancamento) int
 	}
@@ -102,7 +102,7 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	CriarLacamento(ctx context.Context, input model.NovoLancamento) (*model.Lancamento, error)
+	CriarLancamento(ctx context.Context, input model.NovoLancamento) (*model.Lancamento, error)
 	CriarCategoria(ctx context.Context, input model.NovaCategoria) (*model.Categoria, error)
 	CriarTipoLacamento(ctx context.Context, input model.NovoTipoLancamento) (*model.TipoLacamento, error)
 	CriarFormaPagamento(ctx context.Context, input model.NovaFormaPagamento) (*model.FormaPagamento, error)
@@ -264,17 +264,17 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CriarFormaPagamento(childComplexity, args["input"].(model.NovaFormaPagamento)), true
 
-	case "Mutation.criarLacamento":
-		if e.complexity.Mutation.CriarLacamento == nil {
+	case "Mutation.criarLancamento":
+		if e.complexity.Mutation.CriarLancamento == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_criarLacamento_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_criarLancamento_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CriarLacamento(childComplexity, args["input"].(model.NovoLancamento)), true
+		return e.complexity.Mutation.CriarLancamento(childComplexity, args["input"].(model.NovoLancamento)), true
 
 	case "Mutation.criarNivelNecessidade":
 		if e.complexity.Mutation.CriarNivelNecessidade == nil {
@@ -559,17 +559,17 @@ func (ec *executionContext) field_Mutation_criarFormaPagamento_argsInput(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Mutation_criarLacamento_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+func (ec *executionContext) field_Mutation_criarLancamento_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
-	arg0, err := ec.field_Mutation_criarLacamento_argsInput(ctx, rawArgs)
+	arg0, err := ec.field_Mutation_criarLancamento_argsInput(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
 	args["input"] = arg0
 	return args, nil
 }
-func (ec *executionContext) field_Mutation_criarLacamento_argsInput(
+func (ec *executionContext) field_Mutation_criarLancamento_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
 ) (model.NovoLancamento, error) {
@@ -1427,8 +1427,8 @@ func (ec *executionContext) fieldContext_Lancamento_recorrencia(_ context.Contex
 	return fc, nil
 }
 
-func (ec *executionContext) _Mutation_criarLacamento(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_criarLacamento(ctx, field)
+func (ec *executionContext) _Mutation_criarLancamento(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_criarLancamento(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1441,7 +1441,7 @@ func (ec *executionContext) _Mutation_criarLacamento(ctx context.Context, field 
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CriarLacamento(rctx, fc.Args["input"].(model.NovoLancamento))
+		return ec.resolvers.Mutation().CriarLancamento(rctx, fc.Args["input"].(model.NovoLancamento))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1458,7 +1458,7 @@ func (ec *executionContext) _Mutation_criarLacamento(ctx context.Context, field 
 	return ec.marshalNLancamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐLancamento(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Mutation_criarLacamento(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Mutation_criarLancamento(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Mutation",
 		Field:      field,
@@ -1495,7 +1495,7 @@ func (ec *executionContext) fieldContext_Mutation_criarLacamento(ctx context.Con
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_criarLacamento_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Mutation_criarLancamento_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -4642,9 +4642,9 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Mutation")
-		case "criarLacamento":
+		case "criarLancamento":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_criarLacamento(ctx, field)
+				return ec._Mutation_criarLancamento(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
