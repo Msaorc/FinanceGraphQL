@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-const SqlInsert = "INSERT INTO lacamentos (id, descricao, valor, observacao, recorrencia) VALUES ($1,$2,$3,$4,$5)"
+const SqlInsertLancamento = "INSERT INTO lacamentos (id, descricao, valor, observacao, recorrencia) VALUES ($1,$2,$3,$4,$5)"
 
 type Lancamento struct {
 	db          *sql.DB
@@ -17,13 +17,13 @@ type Lancamento struct {
 	Recorrencia int32
 }
 
-func NewCategory(db *sql.DB) *Lancamento {
+func NewLaunch(db *sql.DB) *Lancamento {
 	return &Lancamento{db: db}
 }
 
 func (c *Lancamento) Create(descricao string, valor float64, observacao string, recorrencia int32) (Lancamento, error) {
 	id := uuid.New().String()
-	_, err := c.db.Exec(SqlInsert, id, descricao, valor, observacao, recorrencia)
+	_, err := c.db.Exec(SqlInsertLancamento, id, descricao, valor, observacao, recorrencia)
 
 	if err != nil {
 		return Lancamento{}, err

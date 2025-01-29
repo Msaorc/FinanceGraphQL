@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-const sqlInsert = "INSERT INTO nivel_necessidade (id, descricao, cor) VALUES ($1,$2,$3)"
+const sqlInsertNivelNecessidade = "INSERT INTO nivel_necessidade (id, descricao, cor) VALUES ($1,$2,$3)"
 
 type NivelNecessidade struct {
 	db        *sql.DB
@@ -21,7 +21,7 @@ func NewNeedLevel(db *sql.DB) *NivelNecessidade {
 
 func (n *NivelNecessidade) Create(descricao string, cor string) (NivelNecessidade, error) {
 	id := uuid.New().String()
-	_, err := n.db.Exec(sqlInsert, id, descricao, cor)
+	_, err := n.db.Exec(sqlInsertNivelNecessidade, id, descricao, cor)
 	if err != nil {
 		return NivelNecessidade{}, nil
 	}

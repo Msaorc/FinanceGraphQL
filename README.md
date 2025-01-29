@@ -12,3 +12,8 @@
 ## Execução do servidor GraphQL:
 
 - `go run server.go`
+
+## Links importantes:
+
+-- https://github.com/mattn/go-sqlite3
+-- https://ultahost.com/knowledge-base/install-sqlite-on-ubuntu/

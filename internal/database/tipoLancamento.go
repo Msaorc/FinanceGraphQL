@@ -6,7 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-const sqlInsert = "INSERT INTO tipo_lancamento (id, descricao) VALUES ($1,$2)"
+const sqlInsertTipoLancamento = "INSERT INTO tipo_lancamento (id, descricao) VALUES ($1,$2)"
 
 type TipoLacamento struct {
 	db        *sql.DB
@@ -20,7 +20,7 @@ func NewReleaseType(db *sql.DB) *TipoLacamento {
 
 func (t *TipoLacamento) Create(descricao string) (TipoLacamento, error) {
 	id := uuid.New().String()
-	_, err := t.db.Exec(sqlInsert, id, descricao)
+	_, err := t.db.Exec(sqlInsertTipoLancamento, id, descricao)
 
 	if err != nil {
 		return TipoLacamento{}, err
