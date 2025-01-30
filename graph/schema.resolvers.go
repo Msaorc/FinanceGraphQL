@@ -87,7 +87,18 @@ func (r *queryResolver) Lacamentos(ctx context.Context) ([]*model.Lancamento, er
 
 // Categorias is the resolver for the categorias field.
 func (r *queryResolver) Categorias(ctx context.Context) ([]*model.Categoria, error) {
-	panic(fmt.Errorf("not implemented: Categorias - categorias"))
+	categorias, err := r.CategoriaDB.FindAll()
+	if err != nil {
+		return nil, err
+	}
+	var categoriasModel []*model.Categoria
+	for _, categoria := range categorias {
+		categoriasModel = append(categoriasModel, &model.Categoria{
+			ID:        categoria.ID,
+			Descricao: categoria.Descricao,
+		})
+	}
+	return categoriasModel, nil
 }
 
 // TiposLacamento is the resolver for the tiposLacamento field.

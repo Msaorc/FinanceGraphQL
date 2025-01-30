@@ -7,6 +7,7 @@ import (
 )
 
 const sqlInsertCategoria = "INSERT INTO categorias (id, descricao) VALUES ($1,$2)"
+const SqlBuscarCategorias = "SELECT id, descricao FROM categorias"
 
 type Categoria struct {
 	db        *sql.DB
@@ -27,4 +28,21 @@ func (c *Categoria) Create(descricao string) (Categoria, error) {
 	}
 
 	return Categoria{ID: id, Descricao: descricao}, nil
+}
+
+func (c *Categoria) FindAll() ([]Categoria, error) {
+	rows, err := c.db.Query(SqlBuscarCategorias)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	categorias := []Categoria{}
+	for rows.Next() {
+		var id, descricao string
+		if err := rows.Scan(&id, &descricao); err != nil {
+			return nil, err
+		}
+		categorias = append(categorias, Categoria{ID: id, Descricao: descricao})
+	}
+	return categorias, nil
 }
