@@ -13,7 +13,7 @@ import (
 
 // CriarLancamento is the resolver for the criarLancamento field.
 func (r *mutationResolver) CriarLancamento(ctx context.Context, input model.NovoLancamento) (*model.Lancamento, error) {
-	lancamento, err := r.LacamentoDB.Create(input.Descricao, input.Valor, *input.Observacao, *input.Recorrencia)
+	lancamento, err := r.LacamentoDB.Create(input.Descricao, input.Valor, *input.Observacao, *input.Recorrencia, input.TipoID, input.CategoriaID, input.FormaPagamentoID, input.NecessidadeID)
 	if err != nil {
 		return nil, err
 	}
