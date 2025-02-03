@@ -13,7 +13,7 @@ import (
 
 // CriarLancamento is the resolver for the criarLancamento field.
 func (r *mutationResolver) CriarLancamento(ctx context.Context, input model.NovoLancamento) (*model.Lancamento, error) {
-	lancamento, err := r.LacamentoDB.Create(input.Descricao, input.Valor, *input.Observacao, *input.Recorrencia, input.TipoID, input.CategoriaID, input.FormaPagamentoID, input.NecessidadeID)
+	lancamento, err := r.LancamentoDB.Create(input.Descricao, input.Valor, *input.Observacao, *input.Recorrencia, input.TipoID, input.CategoriaID, input.FormaPagamentoID, input.NecessidadeID)
 	if err != nil {
 		return nil, err
 	}
@@ -40,14 +40,14 @@ func (r *mutationResolver) CriarCategoria(ctx context.Context, input model.NovaC
 	}, nil
 }
 
-// CriarTipoLacamento is the resolver for the criarTipoLacamento field.
-func (r *mutationResolver) CriarTipoLacamento(ctx context.Context, input model.NovoTipoLancamento) (*model.TipoLacamento, error) {
+// CriarTipoLancamento is the resolver for the criarTipoLancamento field.
+func (r *mutationResolver) CriarTipoLancamento(ctx context.Context, input model.NovoTipoLancamento) (*model.TipoLancamento, error) {
 	tipoLancamento, err := r.TipoLancamentoDB.Create(input.Descricao)
 	if err != nil {
 		return nil, err
 	}
 
-	return &model.TipoLacamento{
+	return &model.TipoLancamento{
 		ID:        tipoLancamento.ID,
 		Descricao: tipoLancamento.Descricao,
 	}, nil
@@ -81,8 +81,8 @@ func (r *mutationResolver) CriarNivelNecessidade(ctx context.Context, input mode
 }
 
 // Lacamentos is the resolver for the lacamentos field.
-func (r *queryResolver) Lacamentos(ctx context.Context) ([]*model.Lancamento, error) {
-	panic(fmt.Errorf("not implemented: Lacamentos - lacamentos"))
+func (r *queryResolver) Lancamentos(ctx context.Context) ([]*model.Lancamento, error) {
+	panic(fmt.Errorf("not implemented: Lancamentos - Lancamentos"))
 }
 
 // Categorias is the resolver for the categorias field.
@@ -101,19 +101,52 @@ func (r *queryResolver) Categorias(ctx context.Context) ([]*model.Categoria, err
 	return categoriasModel, nil
 }
 
-// TiposLacamento is the resolver for the tiposLacamento field.
-func (r *queryResolver) TiposLacamento(ctx context.Context) ([]*model.TipoLacamento, error) {
-	panic(fmt.Errorf("not implemented: TiposLacamento - tiposLacamento"))
+// TiposLancamento is the resolver for the tiposLancamento field.
+func (r *queryResolver) TiposLancamento(ctx context.Context) ([]*model.TipoLancamento, error) {
+	tiposLancamento, err := r.TipoLancamentoDB.FindAll()
+	if err != nil {
+		return nil, err
+	}
+	var tiposLancamentoModel []*model.TipoLancamento
+	for _, tipoLancamento := range tiposLancamento {
+		tiposLancamentoModel = append(tiposLancamentoModel, &model.TipoLancamento{
+			ID:        tipoLancamento.ID,
+			Descricao: tipoLancamento.Descricao,
+		})
+	}
+	return tiposLancamentoModel, nil
 }
 
 // FormasPagamento is the resolver for the formasPagamento field.
 func (r *queryResolver) FormasPagamento(ctx context.Context) ([]*model.FormaPagamento, error) {
-	panic(fmt.Errorf("not implemented: FormasPagamento - formasPagamento"))
+	formasPagamento, err := r.FormaPagamentoDB.FindAll()
+	if err != nil {
+		return nil, err
+	}
+	var formasPagamentoModel []*model.FormaPagamento
+	for _, formaPagamento := range formasPagamento {
+		formasPagamentoModel = append(formasPagamentoModel, &model.FormaPagamento{
+			ID:        formaPagamento.ID,
+			Descricao: formaPagamento.Descricao,
+		})
+	}
+	return formasPagamentoModel, nil
 }
 
 // NiveisNecessidade is the resolver for the niveisNecessidade field.
 func (r *queryResolver) NiveisNecessidade(ctx context.Context) ([]*model.NivelNecessidade, error) {
-	panic(fmt.Errorf("not implemented: NiveisNecessidade - niveisNecessidade"))
+	niveisNecessidade, err := r.NivelNecessidadeDB.FindAll()
+	if err != nil {
+		return nil, err
+	}
+	var niveisNecessidadeModel []*model.NivelNecessidade
+	for _, nivelNecessidade := range niveisNecessidade {
+		niveisNecessidadeModel = append(niveisNecessidadeModel, &model.NivelNecessidade{
+			ID:        nivelNecessidade.ID,
+			Descricao: nivelNecessidade.Descricao,
+		})
+	}
+	return niveisNecessidadeModel, nil
 }
 
 // Mutation returns MutationResolver implementation.

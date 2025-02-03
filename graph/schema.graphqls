@@ -1,7 +1,7 @@
 type Lancamento {
   id: ID!
   descricao: String!
-  tipo: TipoLacamento!
+  tipo: TipoLancamento!
   categoria: Categoria!
   valor: Float!
   formaPagamento: FormaPagamento!
@@ -16,7 +16,7 @@ type Categoria{
   lancamento: [Lancamento]
 }
 
-type TipoLacamento {
+type TipoLancamento {
   id: ID!
   descricao: String!
   lancamento: [Lancamento]
@@ -64,9 +64,9 @@ input NovoNivelNecessidade {
 }
 
 type Query {
-  lacamentos: [Lancamento]
+  lancamentos: [Lancamento]
   categorias: [Categoria]
-  tiposLacamento: [TipoLacamento]
+  tiposLancamento: [TipoLancamento]
   formasPagamento: [FormaPagamento]
   niveisNecessidade: [NivelNecessidade]
 }
@@ -74,7 +74,7 @@ type Query {
 type Mutation {
   criarLancamento(input: NovoLancamento!): Lancamento!
   criarCategoria(input: NovaCategoria!): Categoria!
-  criarTipoLacamento(input: NovoTipoLancamento!): TipoLacamento!
+  criarTipoLancamento(input: NovoTipoLancamento!): TipoLancamento!
   criarFormaPagamento(input: NovaFormaPagamento!): FormaPagamento!
   criarNivelNecessidade(input: NovoNivelNecessidade!): NivelNecessidade!  
 }

@@ -7,7 +7,7 @@ import (
 )
 
 const sqlInsertCategoria = "INSERT INTO categorias (id, descricao) VALUES ($1,$2)"
-const SqlBuscarCategorias = "SELECT id, descricao FROM categorias"
+const SqlFindCategorias = "SELECT id, descricao FROM categorias"
 
 type Categoria struct {
 	db        *sql.DB
@@ -31,7 +31,7 @@ func (c *Categoria) Create(descricao string) (Categoria, error) {
 }
 
 func (c *Categoria) FindAll() ([]Categoria, error) {
-	rows, err := c.db.Query(SqlBuscarCategorias)
+	rows, err := c.db.Query(SqlFindCategorias)
 	if err != nil {
 		return nil, err
 	}

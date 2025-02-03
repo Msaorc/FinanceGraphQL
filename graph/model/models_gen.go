@@ -17,7 +17,7 @@ type FormaPagamento struct {
 type Lancamento struct {
 	ID             string            `json:"id"`
 	Descricao      string            `json:"descricao"`
-	Tipo           *TipoLacamento    `json:"tipo"`
+	Tipo           *TipoLancamento   `json:"tipo"`
 	Categoria      *Categoria        `json:"categoria"`
 	Valor          float64           `json:"valor"`
 	FormaPagamento *FormaPagamento   `json:"formaPagamento"`
@@ -67,7 +67,7 @@ type NovoTipoLancamento struct {
 type Query struct {
 }
 
-type TipoLacamento struct {
+type TipoLancamento struct {
 	ID         string        `json:"id"`
 	Descricao  string        `json:"descricao"`
 	Lancamento []*Lancamento `json:"lancamento,omitempty"`

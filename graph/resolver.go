@@ -7,9 +7,9 @@ import "github.com/msaorc/FinanceGraphQL/internal/database"
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	LacamentoDB        *database.Lancamento
+	LancamentoDB       *database.Lancamento
 	CategoriaDB        *database.Categoria
-	TipoLancamentoDB   *database.TipoLacamento
+	TipoLancamentoDB   *database.TipoLancamento
 	FormaPagamentoDB   *database.FormaPagamento
 	NivelNecessidadeDB *database.NivelNecessidade
 }

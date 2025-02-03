@@ -76,7 +76,7 @@ type ComplexityRoot struct {
 		CriarFormaPagamento   func(childComplexity int, input model.NovaFormaPagamento) int
 		CriarLancamento       func(childComplexity int, input model.NovoLancamento) int
 		CriarNivelNecessidade func(childComplexity int, input model.NovoNivelNecessidade) int
-		CriarTipoLacamento    func(childComplexity int, input model.NovoTipoLancamento) int
+		CriarTipoLancamento   func(childComplexity int, input model.NovoTipoLancamento) int
 	}
 
 	NivelNecessidade struct {
@@ -89,12 +89,12 @@ type ComplexityRoot struct {
 	Query struct {
 		Categorias        func(childComplexity int) int
 		FormasPagamento   func(childComplexity int) int
-		Lacamentos        func(childComplexity int) int
+		Lancamentos       func(childComplexity int) int
 		NiveisNecessidade func(childComplexity int) int
-		TiposLacamento    func(childComplexity int) int
+		TiposLancamento   func(childComplexity int) int
 	}
 
-	TipoLacamento struct {
+	TipoLancamento struct {
 		Descricao  func(childComplexity int) int
 		ID         func(childComplexity int) int
 		Lancamento func(childComplexity int) int
@@ -104,14 +104,14 @@ type ComplexityRoot struct {
 type MutationResolver interface {
 	CriarLancamento(ctx context.Context, input model.NovoLancamento) (*model.Lancamento, error)
 	CriarCategoria(ctx context.Context, input model.NovaCategoria) (*model.Categoria, error)
-	CriarTipoLacamento(ctx context.Context, input model.NovoTipoLancamento) (*model.TipoLacamento, error)
+	CriarTipoLancamento(ctx context.Context, input model.NovoTipoLancamento) (*model.TipoLancamento, error)
 	CriarFormaPagamento(ctx context.Context, input model.NovaFormaPagamento) (*model.FormaPagamento, error)
 	CriarNivelNecessidade(ctx context.Context, input model.NovoNivelNecessidade) (*model.NivelNecessidade, error)
 }
 type QueryResolver interface {
-	Lacamentos(ctx context.Context) ([]*model.Lancamento, error)
+	Lancamentos(ctx context.Context) ([]*model.Lancamento, error)
 	Categorias(ctx context.Context) ([]*model.Categoria, error)
-	TiposLacamento(ctx context.Context) ([]*model.TipoLacamento, error)
+	TiposLancamento(ctx context.Context) ([]*model.TipoLancamento, error)
 	FormasPagamento(ctx context.Context) ([]*model.FormaPagamento, error)
 	NiveisNecessidade(ctx context.Context) ([]*model.NivelNecessidade, error)
 }
@@ -288,17 +288,17 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.CriarNivelNecessidade(childComplexity, args["input"].(model.NovoNivelNecessidade)), true
 
-	case "Mutation.criarTipoLacamento":
-		if e.complexity.Mutation.CriarTipoLacamento == nil {
+	case "Mutation.criarTipoLancamento":
+		if e.complexity.Mutation.CriarTipoLancamento == nil {
 			break
 		}
 
-		args, err := ec.field_Mutation_criarTipoLacamento_args(context.TODO(), rawArgs)
+		args, err := ec.field_Mutation_criarTipoLancamento_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CriarTipoLacamento(childComplexity, args["input"].(model.NovoTipoLancamento)), true
+		return e.complexity.Mutation.CriarTipoLancamento(childComplexity, args["input"].(model.NovoTipoLancamento)), true
 
 	case "NivelNecessidade.cor":
 		if e.complexity.NivelNecessidade.Cor == nil {
@@ -342,12 +342,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.FormasPagamento(childComplexity), true
 
-	case "Query.lacamentos":
-		if e.complexity.Query.Lacamentos == nil {
+	case "Query.lancamentos":
+		if e.complexity.Query.Lancamentos == nil {
 			break
 		}
 
-		return e.complexity.Query.Lacamentos(childComplexity), true
+		return e.complexity.Query.Lancamentos(childComplexity), true
 
 	case "Query.niveisNecessidade":
 		if e.complexity.Query.NiveisNecessidade == nil {
@@ -356,33 +356,33 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.NiveisNecessidade(childComplexity), true
 
-	case "Query.tiposLacamento":
-		if e.complexity.Query.TiposLacamento == nil {
+	case "Query.tiposLancamento":
+		if e.complexity.Query.TiposLancamento == nil {
 			break
 		}
 
-		return e.complexity.Query.TiposLacamento(childComplexity), true
+		return e.complexity.Query.TiposLancamento(childComplexity), true
 
-	case "TipoLacamento.descricao":
-		if e.complexity.TipoLacamento.Descricao == nil {
+	case "TipoLancamento.descricao":
+		if e.complexity.TipoLancamento.Descricao == nil {
 			break
 		}
 
-		return e.complexity.TipoLacamento.Descricao(childComplexity), true
+		return e.complexity.TipoLancamento.Descricao(childComplexity), true
 
-	case "TipoLacamento.id":
-		if e.complexity.TipoLacamento.ID == nil {
+	case "TipoLancamento.id":
+		if e.complexity.TipoLancamento.ID == nil {
 			break
 		}
 
-		return e.complexity.TipoLacamento.ID(childComplexity), true
+		return e.complexity.TipoLancamento.ID(childComplexity), true
 
-	case "TipoLacamento.lancamento":
-		if e.complexity.TipoLacamento.Lancamento == nil {
+	case "TipoLancamento.lancamento":
+		if e.complexity.TipoLancamento.Lancamento == nil {
 			break
 		}
 
-		return e.complexity.TipoLacamento.Lancamento(childComplexity), true
+		return e.complexity.TipoLancamento.Lancamento(childComplexity), true
 
 	}
 	return 0, false
@@ -605,17 +605,17 @@ func (ec *executionContext) field_Mutation_criarNivelNecessidade_argsInput(
 	return zeroVal, nil
 }
 
-func (ec *executionContext) field_Mutation_criarTipoLacamento_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
+func (ec *executionContext) field_Mutation_criarTipoLancamento_args(ctx context.Context, rawArgs map[string]any) (map[string]any, error) {
 	var err error
 	args := map[string]any{}
-	arg0, err := ec.field_Mutation_criarTipoLacamento_argsInput(ctx, rawArgs)
+	arg0, err := ec.field_Mutation_criarTipoLancamento_argsInput(ctx, rawArgs)
 	if err != nil {
 		return nil, err
 	}
 	args["input"] = arg0
 	return args, nil
 }
-func (ec *executionContext) field_Mutation_criarTipoLacamento_argsInput(
+func (ec *executionContext) field_Mutation_criarTipoLancamento_argsInput(
 	ctx context.Context,
 	rawArgs map[string]any,
 ) (model.NovoTipoLancamento, error) {
@@ -1117,9 +1117,9 @@ func (ec *executionContext) _Lancamento_tipo(ctx context.Context, field graphql.
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.TipoLacamento)
+	res := resTmp.(*model.TipoLancamento)
 	fc.Result = res
-	return ec.marshalNTipoLacamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLacamento(ctx, field.Selections, res)
+	return ec.marshalNTipoLancamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLancamento(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Lancamento_tipo(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1131,13 +1131,13 @@ func (ec *executionContext) fieldContext_Lancamento_tipo(_ context.Context, fiel
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_TipoLacamento_id(ctx, field)
+				return ec.fieldContext_TipoLancamento_id(ctx, field)
 			case "descricao":
-				return ec.fieldContext_TipoLacamento_descricao(ctx, field)
+				return ec.fieldContext_TipoLancamento_descricao(ctx, field)
 			case "lancamento":
-				return ec.fieldContext_TipoLacamento_lancamento(ctx, field)
+				return ec.fieldContext_TipoLancamento_lancamento(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type TipoLacamento", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type TipoLancamento", field.Name)
 		},
 	}
 	return fc, nil
@@ -1565,8 +1565,8 @@ func (ec *executionContext) fieldContext_Mutation_criarCategoria(ctx context.Con
 	return fc, nil
 }
 
-func (ec *executionContext) _Mutation_criarTipoLacamento(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Mutation_criarTipoLacamento(ctx, field)
+func (ec *executionContext) _Mutation_criarTipoLancamento(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Mutation_criarTipoLancamento(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1579,7 +1579,7 @@ func (ec *executionContext) _Mutation_criarTipoLacamento(ctx context.Context, fi
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CriarTipoLacamento(rctx, fc.Args["input"].(model.NovoTipoLancamento))
+		return ec.resolvers.Mutation().CriarTipoLancamento(rctx, fc.Args["input"].(model.NovoTipoLancamento))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1591,12 +1591,12 @@ func (ec *executionContext) _Mutation_criarTipoLacamento(ctx context.Context, fi
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.TipoLacamento)
+	res := resTmp.(*model.TipoLancamento)
 	fc.Result = res
-	return ec.marshalNTipoLacamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLacamento(ctx, field.Selections, res)
+	return ec.marshalNTipoLancamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLancamento(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Mutation_criarTipoLacamento(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Mutation_criarTipoLancamento(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Mutation",
 		Field:      field,
@@ -1605,13 +1605,13 @@ func (ec *executionContext) fieldContext_Mutation_criarTipoLacamento(ctx context
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_TipoLacamento_id(ctx, field)
+				return ec.fieldContext_TipoLancamento_id(ctx, field)
 			case "descricao":
-				return ec.fieldContext_TipoLacamento_descricao(ctx, field)
+				return ec.fieldContext_TipoLancamento_descricao(ctx, field)
 			case "lancamento":
-				return ec.fieldContext_TipoLacamento_lancamento(ctx, field)
+				return ec.fieldContext_TipoLancamento_lancamento(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type TipoLacamento", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type TipoLancamento", field.Name)
 		},
 	}
 	defer func() {
@@ -1621,7 +1621,7 @@ func (ec *executionContext) fieldContext_Mutation_criarTipoLacamento(ctx context
 		}
 	}()
 	ctx = graphql.WithFieldContext(ctx, fc)
-	if fc.Args, err = ec.field_Mutation_criarTipoLacamento_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
+	if fc.Args, err = ec.field_Mutation_criarTipoLancamento_args(ctx, field.ArgumentMap(ec.Variables)); err != nil {
 		ec.Error(ctx, err)
 		return fc, err
 	}
@@ -1949,8 +1949,8 @@ func (ec *executionContext) fieldContext_NivelNecessidade_lancamento(_ context.C
 	return fc, nil
 }
 
-func (ec *executionContext) _Query_lacamentos(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_lacamentos(ctx, field)
+func (ec *executionContext) _Query_lancamentos(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_lancamentos(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -1963,7 +1963,7 @@ func (ec *executionContext) _Query_lacamentos(ctx context.Context, field graphql
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Lacamentos(rctx)
+		return ec.resolvers.Query().Lancamentos(rctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1977,7 +1977,7 @@ func (ec *executionContext) _Query_lacamentos(ctx context.Context, field graphql
 	return ec.marshalOLancamento2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐLancamento(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Query_lacamentos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Query_lancamentos(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Query",
 		Field:      field,
@@ -2059,8 +2059,8 @@ func (ec *executionContext) fieldContext_Query_categorias(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _Query_tiposLacamento(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_Query_tiposLacamento(ctx, field)
+func (ec *executionContext) _Query_tiposLancamento(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Query_tiposLancamento(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2073,7 +2073,7 @@ func (ec *executionContext) _Query_tiposLacamento(ctx context.Context, field gra
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().TiposLacamento(rctx)
+		return ec.resolvers.Query().TiposLancamento(rctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2082,12 +2082,12 @@ func (ec *executionContext) _Query_tiposLacamento(ctx context.Context, field gra
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*model.TipoLacamento)
+	res := resTmp.([]*model.TipoLancamento)
 	fc.Result = res
-	return ec.marshalOTipoLacamento2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLacamento(ctx, field.Selections, res)
+	return ec.marshalOTipoLancamento2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLancamento(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Query_tiposLacamento(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Query_tiposLancamento(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Query",
 		Field:      field,
@@ -2096,13 +2096,13 @@ func (ec *executionContext) fieldContext_Query_tiposLacamento(_ context.Context,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
-				return ec.fieldContext_TipoLacamento_id(ctx, field)
+				return ec.fieldContext_TipoLancamento_id(ctx, field)
 			case "descricao":
-				return ec.fieldContext_TipoLacamento_descricao(ctx, field)
+				return ec.fieldContext_TipoLancamento_descricao(ctx, field)
 			case "lancamento":
-				return ec.fieldContext_TipoLacamento_lancamento(ctx, field)
+				return ec.fieldContext_TipoLancamento_lancamento(ctx, field)
 			}
-			return nil, fmt.Errorf("no field named %q was found under type TipoLacamento", field.Name)
+			return nil, fmt.Errorf("no field named %q was found under type TipoLancamento", field.Name)
 		},
 	}
 	return fc, nil
@@ -2337,8 +2337,8 @@ func (ec *executionContext) fieldContext_Query___schema(_ context.Context, field
 	return fc, nil
 }
 
-func (ec *executionContext) _TipoLacamento_id(ctx context.Context, field graphql.CollectedField, obj *model.TipoLacamento) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TipoLacamento_id(ctx, field)
+func (ec *executionContext) _TipoLancamento_id(ctx context.Context, field graphql.CollectedField, obj *model.TipoLancamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TipoLancamento_id(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2368,9 +2368,9 @@ func (ec *executionContext) _TipoLacamento_id(ctx context.Context, field graphql
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TipoLacamento_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TipoLancamento_id(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "TipoLacamento",
+		Object:     "TipoLancamento",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -2381,8 +2381,8 @@ func (ec *executionContext) fieldContext_TipoLacamento_id(_ context.Context, fie
 	return fc, nil
 }
 
-func (ec *executionContext) _TipoLacamento_descricao(ctx context.Context, field graphql.CollectedField, obj *model.TipoLacamento) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TipoLacamento_descricao(ctx, field)
+func (ec *executionContext) _TipoLancamento_descricao(ctx context.Context, field graphql.CollectedField, obj *model.TipoLancamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TipoLancamento_descricao(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2412,9 +2412,9 @@ func (ec *executionContext) _TipoLacamento_descricao(ctx context.Context, field 
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TipoLacamento_descricao(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TipoLancamento_descricao(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "TipoLacamento",
+		Object:     "TipoLancamento",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -2425,8 +2425,8 @@ func (ec *executionContext) fieldContext_TipoLacamento_descricao(_ context.Conte
 	return fc, nil
 }
 
-func (ec *executionContext) _TipoLacamento_lancamento(ctx context.Context, field graphql.CollectedField, obj *model.TipoLacamento) (ret graphql.Marshaler) {
-	fc, err := ec.fieldContext_TipoLacamento_lancamento(ctx, field)
+func (ec *executionContext) _TipoLancamento_lancamento(ctx context.Context, field graphql.CollectedField, obj *model.TipoLancamento) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_TipoLancamento_lancamento(ctx, field)
 	if err != nil {
 		return graphql.Null
 	}
@@ -2453,9 +2453,9 @@ func (ec *executionContext) _TipoLacamento_lancamento(ctx context.Context, field
 	return ec.marshalOLancamento2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐLancamento(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_TipoLacamento_lancamento(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_TipoLancamento_lancamento(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
-		Object:     "TipoLacamento",
+		Object:     "TipoLancamento",
 		Field:      field,
 		IsMethod:   false,
 		IsResolver: false,
@@ -4656,9 +4656,9 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
-		case "criarTipoLacamento":
+		case "criarTipoLancamento":
 			out.Values[i] = ec.OperationContext.RootResolverMiddleware(innerCtx, func(ctx context.Context) (res graphql.Marshaler) {
-				return ec._Mutation_criarTipoLacamento(ctx, field)
+				return ec._Mutation_criarTipoLancamento(ctx, field)
 			})
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
@@ -4770,7 +4770,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Query")
-		case "lacamentos":
+		case "lancamentos":
 			field := field
 
 			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
@@ -4779,7 +4779,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_lacamentos(ctx, field)
+				res = ec._Query_lancamentos(ctx, field)
 				return res
 			}
 
@@ -4808,7 +4808,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 			}
 
 			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return rrm(innerCtx) })
-		case "tiposLacamento":
+		case "tiposLancamento":
 			field := field
 
 			innerFunc := func(ctx context.Context, _ *graphql.FieldSet) (res graphql.Marshaler) {
@@ -4817,7 +4817,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_tiposLacamento(ctx, field)
+				res = ec._Query_tiposLancamento(ctx, field)
 				return res
 			}
 
@@ -4896,29 +4896,29 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 	return out
 }
 
-var tipoLacamentoImplementors = []string{"TipoLacamento"}
+var tipoLancamentoImplementors = []string{"TipoLancamento"}
 
-func (ec *executionContext) _TipoLacamento(ctx context.Context, sel ast.SelectionSet, obj *model.TipoLacamento) graphql.Marshaler {
-	fields := graphql.CollectFields(ec.OperationContext, sel, tipoLacamentoImplementors)
+func (ec *executionContext) _TipoLancamento(ctx context.Context, sel ast.SelectionSet, obj *model.TipoLancamento) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, tipoLancamentoImplementors)
 
 	out := graphql.NewFieldSet(fields)
 	deferred := make(map[string]*graphql.FieldSet)
 	for i, field := range fields {
 		switch field.Name {
 		case "__typename":
-			out.Values[i] = graphql.MarshalString("TipoLacamento")
+			out.Values[i] = graphql.MarshalString("TipoLancamento")
 		case "id":
-			out.Values[i] = ec._TipoLacamento_id(ctx, field, obj)
+			out.Values[i] = ec._TipoLancamento_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
 		case "descricao":
-			out.Values[i] = ec._TipoLacamento_descricao(ctx, field, obj)
+			out.Values[i] = ec._TipoLancamento_descricao(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				out.Invalids++
 			}
 		case "lancamento":
-			out.Values[i] = ec._TipoLacamento_lancamento(ctx, field, obj)
+			out.Values[i] = ec._TipoLancamento_lancamento(ctx, field, obj)
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -5409,18 +5409,18 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 	return res
 }
 
-func (ec *executionContext) marshalNTipoLacamento2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLacamento(ctx context.Context, sel ast.SelectionSet, v model.TipoLacamento) graphql.Marshaler {
-	return ec._TipoLacamento(ctx, sel, &v)
+func (ec *executionContext) marshalNTipoLancamento2githubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLancamento(ctx context.Context, sel ast.SelectionSet, v model.TipoLancamento) graphql.Marshaler {
+	return ec._TipoLancamento(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNTipoLacamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLacamento(ctx context.Context, sel ast.SelectionSet, v *model.TipoLacamento) graphql.Marshaler {
+func (ec *executionContext) marshalNTipoLancamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLancamento(ctx context.Context, sel ast.SelectionSet, v *model.TipoLancamento) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
 		}
 		return graphql.Null
 	}
-	return ec._TipoLacamento(ctx, sel, v)
+	return ec._TipoLancamento(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalN__Directive2githubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐDirective(ctx context.Context, sel ast.SelectionSet, v introspection.Directive) graphql.Marshaler {
@@ -5926,7 +5926,7 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	return res
 }
 
-func (ec *executionContext) marshalOTipoLacamento2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLacamento(ctx context.Context, sel ast.SelectionSet, v []*model.TipoLacamento) graphql.Marshaler {
+func (ec *executionContext) marshalOTipoLancamento2ᚕᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLancamento(ctx context.Context, sel ast.SelectionSet, v []*model.TipoLancamento) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
@@ -5953,7 +5953,7 @@ func (ec *executionContext) marshalOTipoLacamento2ᚕᚖgithubᚗcomᚋmsaorcᚋ
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalOTipoLacamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLacamento(ctx, sel, v[i])
+			ret[i] = ec.marshalOTipoLancamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLancamento(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -5967,11 +5967,11 @@ func (ec *executionContext) marshalOTipoLacamento2ᚕᚖgithubᚗcomᚋmsaorcᚋ
 	return ret
 }
 
-func (ec *executionContext) marshalOTipoLacamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLacamento(ctx context.Context, sel ast.SelectionSet, v *model.TipoLacamento) graphql.Marshaler {
+func (ec *executionContext) marshalOTipoLancamento2ᚖgithubᚗcomᚋmsaorcᚋFinanceGraphQLᚋgraphᚋmodelᚐTipoLancamento(ctx context.Context, sel ast.SelectionSet, v *model.TipoLancamento) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
-	return ec._TipoLacamento(ctx, sel, v)
+	return ec._TipoLancamento(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐEnumValueᚄ(ctx context.Context, sel ast.SelectionSet, v []introspection.EnumValue) graphql.Marshaler {
