@@ -2,38 +2,7 @@
 
 package model
 
-type Categoria struct {
-	ID         string        `json:"id"`
-	Descricao  string        `json:"descricao"`
-	Lancamento []*Lancamento `json:"lancamento,omitempty"`
-}
-
-type FormaPagamento struct {
-	ID         string        `json:"id"`
-	Descricao  string        `json:"descricao"`
-	Lancamento []*Lancamento `json:"lancamento,omitempty"`
-}
-
-type Lancamento struct {
-	ID             string            `json:"id"`
-	Descricao      string            `json:"descricao"`
-	Tipo           *TipoLancamento   `json:"tipo"`
-	Categoria      *Categoria        `json:"categoria"`
-	Valor          float64           `json:"valor"`
-	FormaPagamento *FormaPagamento   `json:"formaPagamento"`
-	Observacao     *string           `json:"observacao,omitempty"`
-	Necessidade    *NivelNecessidade `json:"necessidade"`
-	Recorrencia    *int32            `json:"recorrencia,omitempty"`
-}
-
 type Mutation struct {
-}
-
-type NivelNecessidade struct {
-	ID         string        `json:"id"`
-	Descricao  string        `json:"descricao"`
-	Cor        string        `json:"cor"`
-	Lancamento []*Lancamento `json:"lancamento,omitempty"`
 }
 
 type NovaCategoria struct {
@@ -65,10 +34,4 @@ type NovoTipoLancamento struct {
 }
 
 type Query struct {
-}
-
-type TipoLancamento struct {
-	ID         string        `json:"id"`
-	Descricao  string        `json:"descricao"`
-	Lancamento []*Lancamento `json:"lancamento,omitempty"`
 }

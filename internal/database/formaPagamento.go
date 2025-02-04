@@ -15,8 +15,8 @@ type FormaPagamento struct {
 	Descricao string
 }
 
-func NewPaymentMethod(db *sql.DB) *NivelNecessidade {
-	return &NivelNecessidade{db: db}
+func NewPaymentMethod(db *sql.DB) *FormaPagamento {
+	return &FormaPagamento{db: db}
 }
 
 func (f *FormaPagamento) Create(descricao string) (FormaPagamento, error) {

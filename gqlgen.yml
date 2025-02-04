@@ -125,6 +125,21 @@ autobind:
 # modelgen, the others will be allowed when binding to fields. Configure them to
 # your liking
 models:
+  Categoria:
+    model: 
+      - github.com/msaorc/FinanceGraphQL/graph/model.Categoria
+  FormaPagamento:
+    model: 
+      - github.com/msaorc/FinanceGraphQL/graph/model.FormaPagamento
+  TipoLancamento:
+    model: 
+      - github.com/msaorc/FinanceGraphQL/graph/model.TipoLancamento
+  NivelNecessidade:
+    model: 
+      - github.com/msaorc/FinanceGraphQL/graph/model.NivelNecessidade
+  Lancamento:
+    model: 
+      - github.com/msaorc/FinanceGraphQL/graph/model.Lancamento      
   ID:
     model:
       - github.com/99designs/gqlgen/graphql.ID

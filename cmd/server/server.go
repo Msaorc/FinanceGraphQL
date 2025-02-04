@@ -28,6 +28,9 @@ func main() {
 
 	lancamentoDB := database.NewLaunch(db)
 	categoriaDB := database.NewCategory(db)
+	tipoLancamentoDB := database.NewReleaseType(db)
+	nivelNecessidadeDB := database.NewNeedLevel(db)
+	formaPagamentoDB := database.NewPaymentMethod(db)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -35,8 +38,11 @@ func main() {
 	}
 
 	srv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
-		LacamentoDB: lancamentoDB,
-		CategoriaDB: categoriaDB,
+		LancamentoDB:       lancamentoDB,
+		CategoriaDB:        categoriaDB,
+		TipoLancamentoDB:   tipoLancamentoDB,
+		NivelNecessidadeDB: nivelNecessidadeDB,
+		FormaPagamentoDB:   formaPagamentoDB,
 	}}))
 
 	srv.AddTransport(transport.Options{})

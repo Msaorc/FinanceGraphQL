@@ -11,6 +11,30 @@ import (
 	"github.com/msaorc/FinanceGraphQL/graph/model"
 )
 
+// Lancamento is the resolver for the lancamento field.
+func (r *categoriaResolver) Lancamento(ctx context.Context, obj *model.Categoria) ([]*model.Lancamento, error) {
+	lancamentos, err := r.LancamentoDB.FindByCategoriaID(obj.ID)
+	if err != nil {
+		return nil, err
+	}
+	var lacamentosModel []*model.Lancamento
+	for _, lancamento := range lancamentos {
+		lacamentosModel = append(lacamentosModel, &model.Lancamento{
+			ID:          lancamento.ID,
+			Descricao:   lancamento.Descricao,
+			Valor:       lancamento.Valor,
+			Observacao:  &lancamento.Observacao,
+			Recorrencia: &lancamento.Recorrencia,
+		})
+	}
+	return lacamentosModel, nil
+}
+
+// Lancamento is the resolver for the lancamento field.
+func (r *formaPagamentoResolver) Lancamento(ctx context.Context, obj *model.FormaPagamento) ([]*model.Lancamento, error) {
+	panic(fmt.Errorf("not implemented: Lancamento - lancamento"))
+}
+
 // CriarLancamento is the resolver for the criarLancamento field.
 func (r *mutationResolver) CriarLancamento(ctx context.Context, input model.NovoLancamento) (*model.Lancamento, error) {
 	lancamento, err := r.LancamentoDB.Create(input.Descricao, input.Valor, *input.Observacao, *input.Recorrencia, input.TipoID, input.CategoriaID, input.FormaPagamentoID, input.NecessidadeID)
@@ -80,9 +104,28 @@ func (r *mutationResolver) CriarNivelNecessidade(ctx context.Context, input mode
 	}, nil
 }
 
+// Lancamento is the resolver for the lancamento field.
+func (r *nivelNecessidadeResolver) Lancamento(ctx context.Context, obj *model.NivelNecessidade) ([]*model.Lancamento, error) {
+	panic(fmt.Errorf("not implemented: Lancamento - lancamento"))
+}
+
 // Lacamentos is the resolver for the lacamentos field.
 func (r *queryResolver) Lancamentos(ctx context.Context) ([]*model.Lancamento, error) {
-	panic(fmt.Errorf("not implemented: Lancamentos - Lancamentos"))
+	lancamentos, err := r.LancamentoDB.FindAll()
+	if err != nil {
+		return nil, err
+	}
+	var lacamentosModel []*model.Lancamento
+	for _, lancamento := range lancamentos {
+		lacamentosModel = append(lacamentosModel, &model.Lancamento{
+			ID:          lancamento.ID,
+			Descricao:   lancamento.Descricao,
+			Valor:       lancamento.Valor,
+			Observacao:  &lancamento.Observacao,
+			Recorrencia: &lancamento.Recorrencia,
+		})
+	}
+	return lacamentosModel, nil
 }
 
 // Categorias is the resolver for the categorias field.
@@ -149,11 +192,32 @@ func (r *queryResolver) NiveisNecessidade(ctx context.Context) ([]*model.NivelNe
 	return niveisNecessidadeModel, nil
 }
 
+// Lancamento is the resolver for the lancamento field.
+func (r *tipoLancamentoResolver) Lancamento(ctx context.Context, obj *model.TipoLancamento) ([]*model.Lancamento, error) {
+	panic(fmt.Errorf("not implemented: Lancamento - lancamento"))
+}
+
+// Categoria returns CategoriaResolver implementation.
+func (r *Resolver) Categoria() CategoriaResolver { return &categoriaResolver{r} }
+
+// FormaPagamento returns FormaPagamentoResolver implementation.
+func (r *Resolver) FormaPagamento() FormaPagamentoResolver { return &formaPagamentoResolver{r} }
+
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
+
+// NivelNecessidade returns NivelNecessidadeResolver implementation.
+func (r *Resolver) NivelNecessidade() NivelNecessidadeResolver { return &nivelNecessidadeResolver{r} }
 
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+// TipoLancamento returns TipoLancamentoResolver implementation.
+func (r *Resolver) TipoLancamento() TipoLancamentoResolver { return &tipoLancamentoResolver{r} }
+
+type categoriaResolver struct{ *Resolver }
+type formaPagamentoResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
+type nivelNecessidadeResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+type tipoLancamentoResolver struct{ *Resolver }
