@@ -41,6 +41,7 @@ type Config struct {
 type ResolverRoot interface {
 	Categoria() CategoriaResolver
 	FormaPagamento() FormaPagamentoResolver
+	Lancamento() LancamentoResolver
 	Mutation() MutationResolver
 	NivelNecessidade() NivelNecessidadeResolver
 	Query() QueryResolver
@@ -110,6 +111,14 @@ type CategoriaResolver interface {
 }
 type FormaPagamentoResolver interface {
 	Lancamento(ctx context.Context, obj *model.FormaPagamento) ([]*model.Lancamento, error)
+}
+type LancamentoResolver interface {
+	Tipo(ctx context.Context, obj *model.Lancamento) (*model.TipoLancamento, error)
+	Categoria(ctx context.Context, obj *model.Lancamento) (*model.Categoria, error)
+
+	FormaPagamento(ctx context.Context, obj *model.Lancamento) (*model.FormaPagamento, error)
+
+	Necessidade(ctx context.Context, obj *model.Lancamento) (*model.NivelNecessidade, error)
 }
 type MutationResolver interface {
 	CriarLancamento(ctx context.Context, input model.NovoLancamento) (*model.Lancamento, error)
@@ -1121,7 +1130,7 @@ func (ec *executionContext) _Lancamento_tipo(ctx context.Context, field graphql.
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Tipo, nil
+		return ec.resolvers.Lancamento().Tipo(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1142,8 +1151,8 @@ func (ec *executionContext) fieldContext_Lancamento_tipo(_ context.Context, fiel
 	fc = &graphql.FieldContext{
 		Object:     "Lancamento",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
@@ -1173,7 +1182,7 @@ func (ec *executionContext) _Lancamento_categoria(ctx context.Context, field gra
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Categoria, nil
+		return ec.resolvers.Lancamento().Categoria(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1194,8 +1203,8 @@ func (ec *executionContext) fieldContext_Lancamento_categoria(_ context.Context,
 	fc = &graphql.FieldContext{
 		Object:     "Lancamento",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
@@ -1269,7 +1278,7 @@ func (ec *executionContext) _Lancamento_formaPagamento(ctx context.Context, fiel
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.FormaPagamento, nil
+		return ec.resolvers.Lancamento().FormaPagamento(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1290,8 +1299,8 @@ func (ec *executionContext) fieldContext_Lancamento_formaPagamento(_ context.Con
 	fc = &graphql.FieldContext{
 		Object:     "Lancamento",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
@@ -1362,7 +1371,7 @@ func (ec *executionContext) _Lancamento_necessidade(ctx context.Context, field g
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (any, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Necessidade, nil
+		return ec.resolvers.Lancamento().Necessidade(rctx, obj)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1383,8 +1392,8 @@ func (ec *executionContext) fieldContext_Lancamento_necessidade(_ context.Contex
 	fc = &graphql.FieldContext{
 		Object:     "Lancamento",
 		Field:      field,
-		IsMethod:   false,
-		IsResolver: false,
+		IsMethod:   true,
+		IsResolver: true,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			switch field.Name {
 			case "id":
@@ -4642,40 +4651,164 @@ func (ec *executionContext) _Lancamento(ctx context.Context, sel ast.SelectionSe
 		case "id":
 			out.Values[i] = ec._Lancamento_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "descricao":
 			out.Values[i] = ec._Lancamento_descricao(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "tipo":
-			out.Values[i] = ec._Lancamento_tipo(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Lancamento_tipo(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "categoria":
-			out.Values[i] = ec._Lancamento_categoria(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Lancamento_categoria(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "valor":
 			out.Values[i] = ec._Lancamento_valor(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				out.Invalids++
+				atomic.AddUint32(&out.Invalids, 1)
 			}
 		case "formaPagamento":
-			out.Values[i] = ec._Lancamento_formaPagamento(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Lancamento_formaPagamento(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "observacao":
 			out.Values[i] = ec._Lancamento_observacao(ctx, field, obj)
 		case "necessidade":
-			out.Values[i] = ec._Lancamento_necessidade(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				out.Invalids++
+			field := field
+
+			innerFunc := func(ctx context.Context, fs *graphql.FieldSet) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Lancamento_necessidade(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&fs.Invalids, 1)
+				}
+				return res
 			}
+
+			if field.Deferrable != nil {
+				dfs, ok := deferred[field.Deferrable.Label]
+				di := 0
+				if ok {
+					dfs.AddField(field)
+					di = len(dfs.Values) - 1
+				} else {
+					dfs = graphql.NewFieldSet([]graphql.CollectedField{field})
+					deferred[field.Deferrable.Label] = dfs
+				}
+				dfs.Concurrently(di, func(ctx context.Context) graphql.Marshaler {
+					return innerFunc(ctx, dfs)
+				})
+
+				// don't run the out.Concurrently() call below
+				out.Values[i] = graphql.Null
+				continue
+			}
+
+			out.Concurrently(i, func(ctx context.Context) graphql.Marshaler { return innerFunc(ctx, out) })
 		case "recorrencia":
 			out.Values[i] = ec._Lancamento_recorrencia(ctx, field, obj)
 		default:

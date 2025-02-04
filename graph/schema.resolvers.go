@@ -35,6 +35,26 @@ func (r *formaPagamentoResolver) Lancamento(ctx context.Context, obj *model.Form
 	panic(fmt.Errorf("not implemented: Lancamento - lancamento"))
 }
 
+// Tipo is the resolver for the tipo field.
+func (r *lancamentoResolver) Tipo(ctx context.Context, obj *model.Lancamento) (*model.TipoLancamento, error) {
+	panic(fmt.Errorf("not implemented: Tipo - tipo"))
+}
+
+// Categoria is the resolver for the categoria field.
+func (r *lancamentoResolver) Categoria(ctx context.Context, obj *model.Lancamento) (*model.Categoria, error) {
+	panic(fmt.Errorf("not implemented: Categoria - categoria"))
+}
+
+// FormaPagamento is the resolver for the formaPagamento field.
+func (r *lancamentoResolver) FormaPagamento(ctx context.Context, obj *model.Lancamento) (*model.FormaPagamento, error) {
+	panic(fmt.Errorf("not implemented: FormaPagamento - formaPagamento"))
+}
+
+// Necessidade is the resolver for the necessidade field.
+func (r *lancamentoResolver) Necessidade(ctx context.Context, obj *model.Lancamento) (*model.NivelNecessidade, error) {
+	panic(fmt.Errorf("not implemented: Necessidade - necessidade"))
+}
+
 // CriarLancamento is the resolver for the criarLancamento field.
 func (r *mutationResolver) CriarLancamento(ctx context.Context, input model.NovoLancamento) (*model.Lancamento, error) {
 	lancamento, err := r.LancamentoDB.Create(input.Descricao, input.Valor, *input.Observacao, *input.Recorrencia, input.TipoID, input.CategoriaID, input.FormaPagamentoID, input.NecessidadeID)
@@ -204,6 +224,9 @@ func (r *Resolver) Categoria() CategoriaResolver { return &categoriaResolver{r} 
 // FormaPagamento returns FormaPagamentoResolver implementation.
 func (r *Resolver) FormaPagamento() FormaPagamentoResolver { return &formaPagamentoResolver{r} }
 
+// Lancamento returns LancamentoResolver implementation.
+func (r *Resolver) Lancamento() LancamentoResolver { return &lancamentoResolver{r} }
+
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 
@@ -218,6 +241,7 @@ func (r *Resolver) TipoLancamento() TipoLancamentoResolver { return &tipoLancame
 
 type categoriaResolver struct{ *Resolver }
 type formaPagamentoResolver struct{ *Resolver }
+type lancamentoResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
 type nivelNecessidadeResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
