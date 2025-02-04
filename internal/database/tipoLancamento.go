@@ -7,7 +7,7 @@ import (
 )
 
 const sqlInsertTipoLancamento = "INSERT INTO tipo_lancamento (id, descricao) VALUES ($1,$2)"
-const sqlFindTipoLancamento = "SELECT id, descricao FROM tipo_lacamento"
+const sqlFindTipoLancamento = "SELECT id, descricao FROM tipo_lancamento"
 
 type TipoLancamento struct {
 	db        *sql.DB

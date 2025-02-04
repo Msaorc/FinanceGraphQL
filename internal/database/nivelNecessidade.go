@@ -7,7 +7,7 @@ import (
 )
 
 const sqlInsertNivelNecessidade = "INSERT INTO nivel_necessidade (id, descricao, cor) VALUES ($1,$2,$3)"
-const sqlFindNivelNecessidade = "SELECT id, descricao FROM categorias"
+const sqlFindNivelNecessidade = "SELECT id, descricao, cor FROM nivel_necessidade"
 
 type NivelNecessidade struct {
 	db        *sql.DB
@@ -24,7 +24,7 @@ func (n *NivelNecessidade) Create(descricao string, cor string) (NivelNecessidad
 	id := uuid.New().String()
 	_, err := n.db.Exec(sqlInsertNivelNecessidade, id, descricao, cor)
 	if err != nil {
-		return NivelNecessidade{}, nil
+		return NivelNecessidade{}, err
 	}
 
 	return NivelNecessidade{
@@ -42,11 +42,11 @@ func (f *NivelNecessidade) FindAll() ([]NivelNecessidade, error) {
 	defer rows.Close()
 	niveisNecessidade := []NivelNecessidade{}
 	for rows.Next() {
-		var id, descricao string
-		if err := rows.Scan(&id, &descricao); err != nil {
+		var id, descricao, cor string
+		if err := rows.Scan(&id, &descricao, &cor); err != nil {
 			return nil, err
 		}
-		niveisNecessidade = append(niveisNecessidade, NivelNecessidade{ID: id, Descricao: descricao})
+		niveisNecessidade = append(niveisNecessidade, NivelNecessidade{ID: id, Descricao: descricao, Cor: cor})
 	}
 	return niveisNecessidade, nil
 }

@@ -6,9 +6,9 @@ import (
 	"github.com/google/uuid"
 )
 
-const sqlInsertLancamento = "INSERT INTO lacamentos (id, descricao, valor, observacao, recorrencia, tipo_lancamento_id, categoria_id, forma_pagamento_id, nivel_necessidade_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)"
-const sqlFindLancamento = "SELECT id, descricao, valor, observacao, recorrencia, tipo_lancamento_id, categoria_id, forma_pagamento_id, nivel_necessidade_id FROM lacamentos"
-const sqlFindByCategoriaID = "SELECT id, descricao, valor, observacao, recorrencia, tipo_lancamento_id, categoria_id, forma_pagamento_id, nivel_necessidade_id FROM lacamentos WHERE categoria_id = $1"
+const sqlInsertLancamento = "INSERT INTO lancamentos (id, descricao, valor, observacao, recorrencia, tipo_lancamento_id, categoria_id, forma_pagamento_id, nivel_necessidade_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)"
+const sqlFindLancamento = "SELECT id, descricao, valor, observacao, recorrencia, tipo_lancamento_id, categoria_id, forma_pagamento_id, nivel_necessidade_id FROM lancamentos"
+const sqlFindByCategoriaID = "SELECT id, descricao, valor, observacao, recorrencia, tipo_lancamento_id, categoria_id, forma_pagamento_id, nivel_necessidade_id FROM lancamentos WHERE categoria_id = $1"
 
 type Lancamento struct {
 	db                 *sql.DB

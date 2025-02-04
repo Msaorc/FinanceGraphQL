@@ -6,8 +6,8 @@ import (
 	"github.com/google/uuid"
 )
 
-const sqlInsertFormaPagamento = "INSERT INTO nivel_necessidade (id, descricao) VALUES ($1,$2)"
-const sqlFindFormaPagamento = "SELECT id, descricao FROM nivel_necessidade"
+const sqlInsertFormaPagamento = "INSERT INTO forma_pagamento (id, descricao) VALUES ($1,$2)"
+const sqlFindFormaPagamento = "SELECT id, descricao FROM forma_pagamento"
 
 type FormaPagamento struct {
 	db        *sql.DB

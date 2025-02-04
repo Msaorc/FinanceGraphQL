@@ -94,7 +94,7 @@ func (r *mutationResolver) CriarFormaPagamento(ctx context.Context, input model.
 func (r *mutationResolver) CriarNivelNecessidade(ctx context.Context, input model.NovoNivelNecessidade) (*model.NivelNecessidade, error) {
 	nivelNecessidade, err := r.NivelNecessidadeDB.Create(input.Descricao, input.Cor)
 	if err != nil {
-		return &model.NivelNecessidade{}, nil
+		return &model.NivelNecessidade{Descricao: "Erro ao criar nivel necessiade"}, nil
 	}
 
 	return &model.NivelNecessidade{
@@ -187,6 +187,7 @@ func (r *queryResolver) NiveisNecessidade(ctx context.Context) ([]*model.NivelNe
 		niveisNecessidadeModel = append(niveisNecessidadeModel, &model.NivelNecessidade{
 			ID:        nivelNecessidade.ID,
 			Descricao: nivelNecessidade.Descricao,
+			Cor:       nivelNecessidade.Cor,
 		})
 	}
 	return niveisNecessidadeModel, nil
