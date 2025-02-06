@@ -32,7 +32,21 @@ func (r *categoriaResolver) Lancamento(ctx context.Context, obj *model.Categoria
 
 // Lancamento is the resolver for the lancamento field.
 func (r *formaPagamentoResolver) Lancamento(ctx context.Context, obj *model.FormaPagamento) ([]*model.Lancamento, error) {
-	panic(fmt.Errorf("not implemented: Lancamento - lancamento"))
+	lancamentos, err := r.LancamentoDB.FindByFormaPagamentoID(obj.ID)
+	if err != nil {
+		return nil, err
+	}
+	var lacamentosModel []*model.Lancamento
+	for _, lancamento := range lancamentos {
+		lacamentosModel = append(lacamentosModel, &model.Lancamento{
+			ID:          lancamento.ID,
+			Descricao:   lancamento.Descricao,
+			Valor:       lancamento.Valor,
+			Observacao:  &lancamento.Observacao,
+			Recorrencia: &lancamento.Recorrencia,
+		})
+	}
+	return lacamentosModel, nil
 }
 
 // Tipo is the resolver for the tipo field.
@@ -126,7 +140,21 @@ func (r *mutationResolver) CriarNivelNecessidade(ctx context.Context, input mode
 
 // Lancamento is the resolver for the lancamento field.
 func (r *nivelNecessidadeResolver) Lancamento(ctx context.Context, obj *model.NivelNecessidade) ([]*model.Lancamento, error) {
-	panic(fmt.Errorf("not implemented: Lancamento - lancamento"))
+	lancamentos, err := r.LancamentoDB.FindByNivelNecessidadeID(obj.ID)
+	if err != nil {
+		return nil, err
+	}
+	var lacamentosModel []*model.Lancamento
+	for _, lancamento := range lancamentos {
+		lacamentosModel = append(lacamentosModel, &model.Lancamento{
+			ID:          lancamento.ID,
+			Descricao:   lancamento.Descricao,
+			Valor:       lancamento.Valor,
+			Observacao:  &lancamento.Observacao,
+			Recorrencia: &lancamento.Recorrencia,
+		})
+	}
+	return lacamentosModel, nil
 }
 
 // Lacamentos is the resolver for the lacamentos field.
@@ -215,7 +243,21 @@ func (r *queryResolver) NiveisNecessidade(ctx context.Context) ([]*model.NivelNe
 
 // Lancamento is the resolver for the lancamento field.
 func (r *tipoLancamentoResolver) Lancamento(ctx context.Context, obj *model.TipoLancamento) ([]*model.Lancamento, error) {
-	panic(fmt.Errorf("not implemented: Lancamento - lancamento"))
+	lancamentos, err := r.LancamentoDB.FindByTipoLancamentoID(obj.ID)
+	if err != nil {
+		return nil, err
+	}
+	var lacamentosModel []*model.Lancamento
+	for _, lancamento := range lancamentos {
+		lacamentosModel = append(lacamentosModel, &model.Lancamento{
+			ID:          lancamento.ID,
+			Descricao:   lancamento.Descricao,
+			Valor:       lancamento.Valor,
+			Observacao:  &lancamento.Observacao,
+			Recorrencia: &lancamento.Recorrencia,
+		})
+	}
+	return lacamentosModel, nil
 }
 
 // Categoria returns CategoriaResolver implementation.
