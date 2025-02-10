@@ -8,6 +8,7 @@ import (
 
 const sqlInsertTipoLancamento = "INSERT INTO tipo_lancamento (id, descricao) VALUES ($1,$2)"
 const sqlFindTipoLancamento = "SELECT id, descricao FROM tipo_lancamento"
+const sqlFindTipoLancamentoByLacamentoID = "SELECT TL.id, TL.descricao FROM tipo_lancamento TL JOIN lancamentos L ON (TC.id = L.categoria_id) WHERE L.id = $1"
 
 type TipoLancamento struct {
 	db        *sql.DB
@@ -45,4 +46,13 @@ func (c *TipoLancamento) FindAll() ([]TipoLancamento, error) {
 		tiposLancamento = append(tiposLancamento, TipoLancamento{ID: id, Descricao: descricao})
 	}
 	return tiposLancamento, nil
+}
+
+func (c *TipoLancamento) FindTipoLancamentoByLancamentoID(lancamentoID string) (TipoLancamento, error) {
+	var id, descricao string
+	err := c.db.QueryRow(sqlFindTipoLancamentoByLacamentoID, lancamentoID).Scan(&id, &descricao)
+	if err != nil {
+		return TipoLancamento{}, err
+	}
+	return TipoLancamento{ID: id, Descricao: descricao}, nil
 }

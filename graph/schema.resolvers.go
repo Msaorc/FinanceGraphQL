@@ -6,7 +6,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/msaorc/FinanceGraphQL/graph/model"
 )
@@ -51,22 +50,50 @@ func (r *formaPagamentoResolver) Lancamento(ctx context.Context, obj *model.Form
 
 // Tipo is the resolver for the tipo field.
 func (r *lancamentoResolver) Tipo(ctx context.Context, obj *model.Lancamento) (*model.TipoLancamento, error) {
-	panic(fmt.Errorf("not implemented: Tipo - tipo"))
+	tipoLancamento, err := r.TipoLancamentoDB.FindTipoLancamentoByLancamentoID(obj.ID)
+	if err != nil {
+		return nil, err
+	}
+	return &model.TipoLancamento{
+		ID:        tipoLancamento.ID,
+		Descricao: tipoLancamento.Descricao,
+	}, nil
 }
 
 // Categoria is the resolver for the categoria field.
 func (r *lancamentoResolver) Categoria(ctx context.Context, obj *model.Lancamento) (*model.Categoria, error) {
-	panic(fmt.Errorf("not implemented: Categoria - categoria"))
+	categoria, err := r.CategoriaDB.FindCategoriaByLancamentoID(obj.ID)
+	if err != nil {
+		return nil, err
+	}
+	return &model.Categoria{
+		ID:        categoria.ID,
+		Descricao: categoria.Descricao,
+	}, nil
 }
 
 // FormaPagamento is the resolver for the formaPagamento field.
 func (r *lancamentoResolver) FormaPagamento(ctx context.Context, obj *model.Lancamento) (*model.FormaPagamento, error) {
-	panic(fmt.Errorf("not implemented: FormaPagamento - formaPagamento"))
+	categoria, err := r.CategoriaDB.FindCategoriaByLancamentoID(obj.ID)
+	if err != nil {
+		return nil, err
+	}
+	return &model.FormaPagamento{
+		ID:        categoria.ID,
+		Descricao: categoria.Descricao,
+	}, nil
 }
 
 // Necessidade is the resolver for the necessidade field.
 func (r *lancamentoResolver) Necessidade(ctx context.Context, obj *model.Lancamento) (*model.NivelNecessidade, error) {
-	panic(fmt.Errorf("not implemented: Necessidade - necessidade"))
+	categoria, err := r.CategoriaDB.FindCategoriaByLancamentoID(obj.ID)
+	if err != nil {
+		return nil, err
+	}
+	return &model.NivelNecessidade{
+		ID:        categoria.ID,
+		Descricao: categoria.Descricao,
+	}, nil
 }
 
 // CriarLancamento is the resolver for the criarLancamento field.
