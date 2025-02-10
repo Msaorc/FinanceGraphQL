@@ -74,7 +74,7 @@ func (r *lancamentoResolver) Categoria(ctx context.Context, obj *model.Lancament
 
 // FormaPagamento is the resolver for the formaPagamento field.
 func (r *lancamentoResolver) FormaPagamento(ctx context.Context, obj *model.Lancamento) (*model.FormaPagamento, error) {
-	categoria, err := r.CategoriaDB.FindCategoriaByLancamentoID(obj.ID)
+	categoria, err := r.FormaPagamentoDB.FindFormaPagamentoByLancamentoID(obj.ID)
 	if err != nil {
 		return nil, err
 	}

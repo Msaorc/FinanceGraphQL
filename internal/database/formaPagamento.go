@@ -8,6 +8,7 @@ import (
 
 const sqlInsertFormaPagamento = "INSERT INTO forma_pagamento (id, descricao) VALUES ($1,$2)"
 const sqlFindFormaPagamento = "SELECT id, descricao FROM forma_pagamento"
+const sqlFindFormaPagamentoByLancamentoId = "SELECT F.id, F.descricao FROM forma_pagamento F JOIN lancamentos L ON (F.id = L.forma_pagamento_id) WHERE L.id = $1"
 
 type FormaPagamento struct {
 	db        *sql.DB
@@ -48,4 +49,13 @@ func (f *FormaPagamento) FindAll() ([]FormaPagamento, error) {
 		formasPagamento = append(formasPagamento, FormaPagamento{ID: id, Descricao: descricao})
 	}
 	return formasPagamento, nil
+}
+
+func (c *FormaPagamento) FindFormaPagamentoByLancamentoID(lancamentoID string) (FormaPagamento, error) {
+	var id, descricao string
+	err := c.db.QueryRow(sqlFindFormaPagamentoByLancamentoId, lancamentoID).Scan(&id, &descricao)
+	if err != nil {
+		return FormaPagamento{}, err
+	}
+	return FormaPagamento{ID: id, Descricao: descricao}, nil
 }
