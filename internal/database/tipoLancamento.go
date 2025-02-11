@@ -8,7 +8,7 @@ import (
 
 const sqlInsertTipoLancamento = "INSERT INTO tipo_lancamento (id, descricao) VALUES ($1,$2)"
 const sqlFindTipoLancamento = "SELECT id, descricao FROM tipo_lancamento"
-const sqlFindTipoLancamentoByLacamentoID = "SELECT TL.id, TL.descricao FROM tipo_lancamento TL JOIN lancamentos L ON (TC.id = L.categoria_id) WHERE L.id = $1"
+const sqlFindTipoLancamentoByLacamentoID = "SELECT TL.id, TL.descricao FROM tipo_lancamento TL JOIN lancamentos L ON (TL.id = L.tipo_lancamento_id) WHERE L.id = $1"
 
 type TipoLancamento struct {
 	db        *sql.DB

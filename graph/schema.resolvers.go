@@ -66,6 +66,7 @@ func (r *lancamentoResolver) Categoria(ctx context.Context, obj *model.Lancament
 	if err != nil {
 		return nil, err
 	}
+
 	return &model.Categoria{
 		ID:        categoria.ID,
 		Descricao: categoria.Descricao,
@@ -86,7 +87,7 @@ func (r *lancamentoResolver) FormaPagamento(ctx context.Context, obj *model.Lanc
 
 // Necessidade is the resolver for the necessidade field.
 func (r *lancamentoResolver) Necessidade(ctx context.Context, obj *model.Lancamento) (*model.NivelNecessidade, error) {
-	categoria, err := r.CategoriaDB.FindCategoriaByLancamentoID(obj.ID)
+	categoria, err := r.NivelNecessidadeDB.FindNivelNecessidadeByLancamentoID(obj.ID)
 	if err != nil {
 		return nil, err
 	}

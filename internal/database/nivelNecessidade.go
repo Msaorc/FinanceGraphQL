@@ -8,6 +8,7 @@ import (
 
 const sqlInsertNivelNecessidade = "INSERT INTO nivel_necessidade (id, descricao, cor) VALUES ($1,$2,$3)"
 const sqlFindNivelNecessidade = "SELECT id, descricao, cor FROM nivel_necessidade"
+const sqlFindNivelNecessidadeByLancamentoId = "SELECT N.id, N.descricao FROM nivel_necessidade N JOIN lancamentos L ON (N.id = L.nivel_necessidade_id) WHERE L.id = $1"
 
 type NivelNecessidade struct {
 	db        *sql.DB
@@ -49,4 +50,13 @@ func (f *NivelNecessidade) FindAll() ([]NivelNecessidade, error) {
 		niveisNecessidade = append(niveisNecessidade, NivelNecessidade{ID: id, Descricao: descricao, Cor: cor})
 	}
 	return niveisNecessidade, nil
+}
+
+func (c *NivelNecessidade) FindNivelNecessidadeByLancamentoID(lancamentoID string) (NivelNecessidade, error) {
+	var id, descricao string
+	err := c.db.QueryRow(sqlFindNivelNecessidadeByLancamentoId, lancamentoID).Scan(&id, &descricao)
+	if err != nil {
+		return NivelNecessidade{}, err
+	}
+	return NivelNecessidade{ID: id, Descricao: descricao}, nil
 }
