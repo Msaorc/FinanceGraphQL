@@ -15,7 +15,7 @@
 
 * Para fazer a consulta de lançamentos com seus relacionamentos:
 
-`query Consultarlancamentos{`
+`query Consultarlancamentos{ \n teste`
 `  lancamentos {`
 `    id`
 `    descricao`
