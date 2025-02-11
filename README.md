@@ -16,7 +16,7 @@
 * Para fazer a consulta de lançamentos com seus relacionamentos:
 
 ```
-  query Consultarlancamentos{
+query Consultarlancamentos{
   lancamentos {
     id
     descricao
