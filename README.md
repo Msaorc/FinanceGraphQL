@@ -52,6 +52,7 @@
 ## Execução via docker:
 
 -- docker build -t "nome_imagem" .
+
 -- docker run -dit --name "nome_container" -p8080:8080 "nome_imagem"
 
 ## Aplicação
